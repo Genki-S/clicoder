@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'nokogiri'
+
 module Clicoder
   class AOJ
     @@url_format = 'http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id={{problem_id}}'
@@ -18,11 +21,19 @@ module Clicoder
       end
     end
 
-    def fetch_input
+    def fetch_inputs
+      pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Sample Input"]]')
+      pre.map { |node| node.text.lstrip }
     end
 
     def get_url
       @@url_format.gsub('{{problem_id}}', "%04d" % @problem_id)
+    end
+
+    private
+
+    def xml_document
+      @xml_document ||= Nokogiri::HTML(open(get_url))
     end
   end
 end

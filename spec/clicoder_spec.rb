@@ -1,12 +1,16 @@
 require 'clicoder/aoj'
 
 require 'tmpdir'
+require 'open-uri'
+require 'nokogiri'
 
 module Clicoder
   describe AOJ do
     let(:aoj) { AOJ.new(problem_number) }
     let(:problem_number) { 1 }
     let(:problem_id) { "%04d" % problem_number }
+    let(:problem_url) { "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}" }
+    let(:xml_document) { Nokogiri::HTML(open(problem_url)) }
 
     around(:each) do |example|
       Dir.mktmpdir do |dir|
@@ -34,9 +38,17 @@ module Clicoder
       end
     end
 
+    describe '#fetch_inputs' do
+      it 'downloads sample inputs from problem page' do
+        pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Sample Input"]]')
+        inputs = pre.map { |node| node.text.lstrip }
+        expect(aoj.fetch_inputs).to eql(inputs)
+      end
+    end
+
     describe '#get_url' do
       it 'returns url with problem number' do
-        expect(aoj.get_url).to eql("http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}")
+        expect(aoj.get_url).to eql(problem_url)
       end
     end
   end
