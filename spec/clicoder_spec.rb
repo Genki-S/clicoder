@@ -1,3 +1,4 @@
+require 'clicoder'
 require 'clicoder/aoj'
 
 require 'tmpdir'
@@ -57,7 +58,7 @@ module Clicoder
         end
 
         it 'prepares directories for inputs, outpus, and myoutputs' do
-          dirs = ['inputs', 'outputs', 'myoutputs']
+          dirs = [INPUTS_DIRNAME, OUTPUTS_DIRNAME, MY_OUTPUTS_DIRNAME]
           Dir.chdir(problem_id) do
             dirs.each do |d|
               expect(File.directory?(d)).to be_true

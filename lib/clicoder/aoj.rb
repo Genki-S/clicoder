@@ -2,12 +2,11 @@ require 'open-uri'
 require 'nokogiri'
 require 'yaml'
 
+require 'clicoder'
+
 module Clicoder
   class AOJ
     @@url_format = 'http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id={{problem_id}}'
-    @@inputs_dir = 'inputs'
-    @@outputs_dir = 'outputs'
-    @@myoutputs_dir = 'myoutputs'
 
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
@@ -28,14 +27,14 @@ module Clicoder
     def prepare_directories
       FileUtils.mkdir_p(@problem_id)
       Dir.chdir(@problem_id) do
-        FileUtils.mkdir_p(@@inputs_dir)
-        FileUtils.mkdir_p(@@outputs_dir)
-        FileUtils.mkdir_p(@@myoutputs_dir)
+        FileUtils.mkdir_p(INPUTS_DIRNAME)
+        FileUtils.mkdir_p(OUTPUTS_DIRNAME)
+        FileUtils.mkdir_p(MY_OUTPUTS_DIRNAME)
       end
     end
 
     def download_inputs
-      Dir.chdir("#{@problem_id}/#{@@inputs_dir}") do
+      Dir.chdir("#{@problem_id}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(input)
@@ -45,7 +44,7 @@ module Clicoder
     end
 
     def download_outputs
-      Dir.chdir("#{@problem_id}/#{@@outputs_dir}") do
+      Dir.chdir("#{@problem_id}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(output)
