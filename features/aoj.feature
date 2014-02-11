@@ -9,6 +9,6 @@ Feature: AOJ
 
 	Scenario: Build a program
 		Given in a problem directory of number 1
-		Given there is no Makefile rule "build"
 		When I run `clicoder aoj build`
-		Then the exit status should be 1
+		Then the exit status should be 0
+		Then an executable should be generated
