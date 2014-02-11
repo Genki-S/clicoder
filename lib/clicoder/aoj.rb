@@ -55,6 +55,7 @@ module Clicoder
     end
 
     def copy_template
+      return unless @config[:template] && File.exists?(@config[:template])
       ext = File.extname(@config[:template])
       FileUtils.cp(@config[:template], "#{@problem_id}/main#{ext}")
     end

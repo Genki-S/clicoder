@@ -47,48 +47,60 @@ module Clicoder
     end
 
     describe '#start' do
-      before(:each) do
-        aoj.start
-      end
+      context 'when config.yml is present' do
+        before(:each) do
+          aoj.start
+        end
 
-      it 'creates new directory named by problem_id' do
-        expect(File.directory?(problem_id)).to be_true
-      end
+        it 'creates new directory named by problem_id' do
+          expect(File.directory?(problem_id)).to be_true
+        end
 
-      it 'prepares directories for inputs, outpus, and myoutputs' do
-        dirs = ['inputs', 'outputs', 'myoutputs']
-        Dir.chdir(problem_id) do
-          dirs.each do |d|
-            expect(File.directory?(d)).to be_true
+        it 'prepares directories for inputs, outpus, and myoutputs' do
+          dirs = ['inputs', 'outputs', 'myoutputs']
+          Dir.chdir(problem_id) do
+            dirs.each do |d|
+              expect(File.directory?(d)).to be_true
+            end
+          end
+        end
+
+        it 'stores sample input files into "inputs" directory named by number.txt' do
+          input_strings = aoj.fetch_inputs
+          inputs_dir = "#{problem_id}/inputs"
+          Dir.chdir(inputs_dir) do
+            input_strings.each_with_index do |input, i|
+              expect(File.read("#{i}.txt")).to eql(input)
+            end
+          end
+        end
+
+        it 'stores output for sample input files into "outputs" directory named by number.txt' do
+          output_strings = aoj.fetch_outputs
+          outputs_dir = "#{problem_id}/outputs"
+          Dir.chdir(outputs_dir) do
+            output_strings.each_with_index do |output, i|
+              expect(File.read("#{i}.txt")).to eql(output)
+            end
+          end
+        end
+
+        it 'copies template file specified by config.yml into problem directory named main.ext' do
+          template = File.expand_path(config[:template], Dir.pwd)
+          ext = File.extname(template)
+          Dir.chdir(problem_id) do
+            expect(File.read("main#{ext}")).to eql(File.read(template))
           end
         end
       end
 
-      it 'stores sample input files into "inputs" directory named by number.txt' do
-        input_strings = aoj.fetch_inputs
-        inputs_dir = "#{problem_id}/inputs"
-        Dir.chdir(inputs_dir) do
-          input_strings.each_with_index do |input, i|
-            expect(File.read("#{i}.txt")).to eql(input)
-          end
+      context 'when config.yml is not present' do
+        before(:each) do
+          FileUtils.rm('config.yml')
         end
-      end
 
-      it 'stores output for sample input files into "outputs" directory named by number.txt' do
-        output_strings = aoj.fetch_outputs
-        outputs_dir = "#{problem_id}/outputs"
-        Dir.chdir(outputs_dir) do
-          output_strings.each_with_index do |output, i|
-            expect(File.read("#{i}.txt")).to eql(output)
-          end
-        end
-      end
-
-      it 'copies template file specified by config.yml into problem directory named main.ext' do
-        template = File.expand_path(config[:template], Dir.pwd)
-        ext = File.extname(template)
-        Dir.chdir(problem_id) do
-          expect(File.read("main#{ext}")).to eql(File.read(template))
+        it 'does not raise error trying to copy template file' do
+          expect{ aoj.start }.to_not raise_error
         end
       end
     end
