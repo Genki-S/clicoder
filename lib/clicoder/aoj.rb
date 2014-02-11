@@ -26,6 +26,11 @@ module Clicoder
       pre.map { |node| node.text.lstrip }
     end
 
+    def fetch_outputs
+      pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Output for the Sample Input"]]')
+      pre.map { |node| node.text.lstrip }
+    end
+
     def get_url
       @@url_format.gsub('{{problem_id}}', "%04d" % @problem_id)
     end

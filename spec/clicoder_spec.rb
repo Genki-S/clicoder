@@ -46,6 +46,14 @@ module Clicoder
       end
     end
 
+    describe '#fetch_outputs' do
+      it 'downloads outputs for sample inputs from problem page' do
+        pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Output for the Sample Input"]]')
+        outputs = pre.map { |node| node.text.lstrip }
+        expect(aoj.fetch_outputs).to eql(outputs)
+      end
+    end
+
     describe '#get_url' do
       it 'returns url with problem number' do
         expect(aoj.get_url).to eql(problem_url)
