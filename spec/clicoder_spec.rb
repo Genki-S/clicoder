@@ -47,6 +47,16 @@ module Clicoder
           end
         end
       end
+
+      it 'stores output for sample input files into "outputs" directory named by number.txt' do
+        output_strings = aoj.fetch_outputs
+        outputs_dir = "#{problem_id}/outputs"
+        Dir.chdir(outputs_dir) do
+          output_strings.each_with_index do |output, i|
+            expect(File.read("#{i}.txt")).to eql(output)
+          end
+        end
+      end
     end
 
     describe '#fetch_inputs' do

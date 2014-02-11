@@ -15,6 +15,7 @@ module Clicoder
     def start
       prepare_directories
       download_inputs
+      download_outputs
     end
 
     def prepare_directories
@@ -31,6 +32,16 @@ module Clicoder
         fetch_inputs.each_with_index do |input, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(input)
+          end
+        end
+      end
+    end
+
+    def download_outputs
+      Dir.chdir("#{@problem_id}/#{@@outputs_dir}") do
+        fetch_outputs.each_with_index do |output, i|
+          File.open("#{i}.txt", 'w') do |f|
+            f.write(output)
           end
         end
       end
