@@ -3,6 +3,7 @@ require 'clicoder/aoj'
 require 'tmpdir'
 require 'open-uri'
 require 'nokogiri'
+require 'yaml'
 
 module Clicoder
   describe AOJ do
@@ -11,12 +12,26 @@ module Clicoder
     let(:problem_id) { "%04d" % problem_number }
     let(:problem_url) { "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}" }
     let(:xml_document) { Nokogiri::HTML(open(problem_url)) }
+    let(:config) {
+      {
+        user_id: 'Glen_S',
+        password: '',
+        template: 'template.cpp',
+      }
+    }
 
     around(:each) do |example|
       Dir.mktmpdir do |dir|
         Dir.chdir(dir) do
+          File.open('config.yml', 'w') { |f| f.write(config.to_yaml) }
           example.run
         end
+      end
+    end
+
+    describe '.new' do
+      it 'loads configuration from config.yml file' do
+        expect(aoj.user_id).to eql(config[:user_id])
       end
     end
 

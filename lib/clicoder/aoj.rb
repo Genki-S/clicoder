@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
+require 'yaml'
 
 module Clicoder
   class AOJ
@@ -10,6 +11,7 @@ module Clicoder
 
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
+      @config = YAML::load_file('config.yml')
     end
 
     def start
@@ -59,6 +61,10 @@ module Clicoder
 
     def get_url
       @@url_format.gsub('{{problem_id}}', "%04d" % @problem_id)
+    end
+
+    def user_id
+      @config[:user_id]
     end
 
     private
