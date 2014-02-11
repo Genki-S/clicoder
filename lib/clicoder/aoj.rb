@@ -26,11 +26,11 @@ module Clicoder
     end
 
     def prepare_directories
-      Dir.mkdir(@problem_id)
+      FileUtils.mkdir_p(@problem_id)
       Dir.chdir(@problem_id) do
-        Dir.mkdir(@@inputs_dir)
-        Dir.mkdir(@@outputs_dir)
-        Dir.mkdir(@@myoutputs_dir)
+        FileUtils.mkdir_p(@@inputs_dir)
+        FileUtils.mkdir_p(@@outputs_dir)
+        FileUtils.mkdir_p(@@myoutputs_dir)
       end
     end
 
