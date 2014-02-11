@@ -15,10 +15,10 @@ module Clicoder
     let(:xml_document) { Nokogiri::HTML(open(problem_url)) }
     let(:config) {
       {
-        user_id: 'Glen_S',
-        password: '',
-        template: 'template.cpp',
-        makefile: 'Makefile',
+        'user_id' => 'Glen_S',
+        'password' => '',
+        'template' => 'template.cpp',
+        'makefile' => 'Makefile',
       }
     }
 
@@ -26,8 +26,8 @@ module Clicoder
       Dir.mktmpdir do |dir|
         Dir.chdir(dir) do
           File.open('config.yml', 'w') { |f| f.write(config.to_yaml) }
-          File.open(config[:template], 'w') { |f| f.write('template contents') }
-          File.open(config[:makefile], 'w') { |f| f.write('makefile contents') }
+          File.open(config['template'], 'w') { |f| f.write('template contents') }
+          File.open(config['makefile'], 'w') { |f| f.write('makefile contents') }
           example.run
         end
       end
@@ -35,7 +35,7 @@ module Clicoder
 
     describe '.new' do
       it 'loads configuration from config.yml file' do
-        expect(aoj.user_id).to eql(config[:user_id])
+        expect(aoj.user_id).to eql(config['user_id'])
       end
 
       context 'when there is no config.yml file' do
@@ -89,7 +89,7 @@ module Clicoder
         end
 
         it 'copies template file specified by config.yml into problem directory named main.ext' do
-          template = File.expand_path(config[:template], Dir.pwd)
+          template = File.expand_path(config['template'], Dir.pwd)
           ext = File.extname(template)
           Dir.chdir(problem_id) do
             expect(File.read("main#{ext}")).to eql(File.read(template))
@@ -97,7 +97,7 @@ module Clicoder
         end
 
         it 'copies Makefile specified by config.yml into problem directory' do
-          makefile = File.expand_path(config[:makefile], Dir.pwd)
+          makefile = File.expand_path(config['makefile'], Dir.pwd)
           Dir.chdir(problem_id) do
             expect(File.read('Makefile')).to eql(File.read(makefile))
           end

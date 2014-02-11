@@ -55,15 +55,15 @@ module Clicoder
     end
 
     def copy_template
-      return unless @config[:template] && File.exists?(@config[:template])
-      ext = File.extname(@config[:template])
-      FileUtils.cp(@config[:template], "#{@problem_id}/main#{ext}")
+      return unless @config['template'] && File.exists?(@config['template'])
+      ext = File.extname(@config['template'])
+      FileUtils.cp(@config['template'], "#{@problem_id}/main#{ext}")
     end
 
     def copy_makefile
-      return unless @config[:makefile] && File.exists?(@config[:makefile])
-      ext = File.extname(@config[:makefile])
-      FileUtils.cp(@config[:makefile], "#{@problem_id}/Makefile")
+      return unless @config['makefile'] && File.exists?(@config['makefile'])
+      ext = File.extname(@config['makefile'])
+      FileUtils.cp(@config['makefile'], "#{@problem_id}/Makefile")
     end
 
     def fetch_inputs
@@ -81,7 +81,7 @@ module Clicoder
     end
 
     def user_id
-      @config[:user_id]
+      @config['user_id']
     end
 
     def work_dir
