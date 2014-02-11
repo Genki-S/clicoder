@@ -11,7 +11,11 @@ module Clicoder
 
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
-      @config = YAML::load_file('config.yml')
+      if File.exists?('config.yml')
+        @config = YAML::load_file('config.yml')
+      else
+        @config = {}
+      end
     end
 
     def start
@@ -71,6 +75,10 @@ module Clicoder
 
     def user_id
       @config[:user_id]
+    end
+
+    def work_dir
+      @problem_id
     end
 
     private

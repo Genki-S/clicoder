@@ -34,6 +34,16 @@ module Clicoder
       it 'loads configuration from config.yml file' do
         expect(aoj.user_id).to eql(config[:user_id])
       end
+
+      context 'when there is no config.yml file' do
+        before(:each) do
+          FileUtils.rm('config.yml')
+        end
+
+        it 'does not raise error and continue without configuration' do
+          expect(aoj.user_id).to be_nil
+        end
+      end
     end
 
     describe '#start' do
