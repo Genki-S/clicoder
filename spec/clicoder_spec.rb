@@ -21,18 +21,29 @@ module Clicoder
     end
 
     describe '#start' do
-      it 'creates new directory named by problem_id' do
-        expect(File.directory?(problem_id)).to be_false
+      before(:each) do
         aoj.start
+      end
+
+      it 'creates new directory named by problem_id' do
         expect(File.directory?(problem_id)).to be_true
       end
 
       it 'prepares directories for inputs, outpus, and myoutputs' do
         dirs = ['inputs', 'outputs', 'myoutputs']
-        aoj.start
         Dir.chdir(problem_id) do
           dirs.each do |d|
             expect(File.directory?(d)).to be_true
+          end
+        end
+      end
+
+      it 'stores sample input files into "inputs" directory named by number.txt' do
+        input_strings = aoj.fetch_inputs
+        inputs_dir = "#{problem_id}/inputs"
+        Dir.chdir(inputs_dir) do
+          input_strings.each_with_index do |input, i|
+            expect(File.read("#{i}.txt")).to eql(input)
           end
         end
       end

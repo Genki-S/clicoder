@@ -13,11 +13,26 @@ module Clicoder
     end
 
     def start
+      prepare_directories
+      download_inputs
+    end
+
+    def prepare_directories
       Dir.mkdir(@problem_id)
       Dir.chdir(@problem_id) do
         Dir.mkdir(@@inputs_dir)
         Dir.mkdir(@@outputs_dir)
         Dir.mkdir(@@myoutputs_dir)
+      end
+    end
+
+    def download_inputs
+      Dir.chdir("#{@problem_id}/#{@@inputs_dir}") do
+        fetch_inputs.each_with_index do |input, i|
+          File.open("#{i}.txt", 'w') do |f|
+            f.write(input)
+          end
+        end
       end
     end
 
