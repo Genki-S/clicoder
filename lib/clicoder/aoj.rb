@@ -22,6 +22,7 @@ module Clicoder
       download_inputs
       download_outputs
       copy_template
+      copy_makefile
     end
 
     def prepare_directories
@@ -57,6 +58,12 @@ module Clicoder
       return unless @config[:template] && File.exists?(@config[:template])
       ext = File.extname(@config[:template])
       FileUtils.cp(@config[:template], "#{@problem_id}/main#{ext}")
+    end
+
+    def copy_makefile
+      return unless @config[:makefile] && File.exists?(@config[:makefile])
+      ext = File.extname(@config[:makefile])
+      FileUtils.cp(@config[:makefile], "#{@problem_id}/Makefile")
     end
 
     def fetch_inputs

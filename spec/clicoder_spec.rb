@@ -18,6 +18,7 @@ module Clicoder
         user_id: 'Glen_S',
         password: '',
         template: 'template.cpp',
+        makefile: 'Makefile',
       }
     }
 
@@ -26,6 +27,7 @@ module Clicoder
         Dir.chdir(dir) do
           File.open('config.yml', 'w') { |f| f.write(config.to_yaml) }
           File.open(config[:template], 'w') { |f| f.write('template contents') }
+          File.open(config[:makefile], 'w') { |f| f.write('makefile contents') }
           example.run
         end
       end
@@ -93,6 +95,13 @@ module Clicoder
             expect(File.read("main#{ext}")).to eql(File.read(template))
           end
         end
+
+        it 'copies Makefile specified by config.yml into problem directory' do
+          makefile = File.expand_path(config[:makefile], Dir.pwd)
+          Dir.chdir(problem_id) do
+            expect(File.read('Makefile')).to eql(File.read(makefile))
+          end
+        end
       end
 
       context 'when config.yml is not present' do
@@ -100,7 +109,7 @@ module Clicoder
           FileUtils.rm('config.yml')
         end
 
-        it 'does not raise error trying to copy template file' do
+        it 'does not raise error' do
           expect{ aoj.start }.to_not raise_error
         end
       end
