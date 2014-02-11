@@ -18,6 +18,7 @@ module Clicoder
       prepare_directories
       download_inputs
       download_outputs
+      copy_template
     end
 
     def prepare_directories
@@ -47,6 +48,11 @@ module Clicoder
           end
         end
       end
+    end
+
+    def copy_template
+      ext = File.extname(@config[:template])
+      FileUtils.cp(@config[:template], "#{@problem_id}/main#{ext}")
     end
 
     def fetch_inputs

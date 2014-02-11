@@ -24,6 +24,7 @@ module Clicoder
       Dir.mktmpdir do |dir|
         Dir.chdir(dir) do
           File.open('config.yml', 'w') { |f| f.write(config.to_yaml) }
+          File.open(config[:template], 'w') { |f| f.write('template contents') }
           example.run
         end
       end
@@ -70,6 +71,14 @@ module Clicoder
           output_strings.each_with_index do |output, i|
             expect(File.read("#{i}.txt")).to eql(output)
           end
+        end
+      end
+
+      it 'copies template file specified by config.yml into problem directory named main.ext' do
+        template = File.expand_path(config[:template], Dir.pwd)
+        ext = File.extname(template)
+        Dir.chdir(problem_id) do
+          expect(File.read("main#{ext}")).to eql(File.read(template))
         end
       end
     end
