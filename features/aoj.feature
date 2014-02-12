@@ -19,3 +19,21 @@ Feature: AOJ
 		When I run `clicoder aoj execute`
 		Then the exit status should be 0
 		Then my answer should be output in my outputs directory
+
+	Scenario: Judge wrong outputs
+		Given in a problem directory of number 1
+		When I run `clicoder aoj build`
+		When I run `clicoder aoj execute`
+		Given outputs are wrong
+		When I run `clicoder aoj judge`
+		Then the exit status should be 1
+		Then the output should contain "Wrong Answer"
+
+	Scenario: Judge correct outputs
+		Given in a problem directory of number 1
+		When I run `clicoder aoj build`
+		When I run `clicoder aoj execute`
+		Given outputs are correct
+		When I run `clicoder aoj judge`
+		Then the exit status should be 0
+		Then the output should contain "Correct Answer"

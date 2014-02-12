@@ -2,6 +2,7 @@ require 'thor'
 require 'thor/group'
 
 require 'clicoder/aoj'
+require 'clicoder/judge'
 
 module Clicoder
   module Sites
@@ -30,6 +31,23 @@ module Clicoder
           FileUtils.cp(TEMP_OUTPUT_FILENAME, "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}")
         end
         FileUtils.rm([TEMP_INPUT_FILENAME, TEMP_OUTPUT_FILENAME])
+      end
+
+      desc "judge", "Judge your outputs"
+      def judge
+        ensure_in_problem_directory
+        accepted = true
+        judge = Judge.new
+        Dir.glob("#{MY_OUTPUTS_DIRNAME}/*.txt").each do |my_output|
+          puts "judging #{my_output}"
+          accepted = false unless judge.judge(my_output, "#{OUTPUTS_DIRNAME}/#{File.basename(my_output)}")
+        end
+        if accepted
+          puts "Correct Answer"
+        else
+          puts "Wrong Answer"
+        end
+        exit accepted ? 0 : 1
       end
 
       no_commands do
