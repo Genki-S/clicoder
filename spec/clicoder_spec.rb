@@ -23,7 +23,7 @@ module Clicoder
     let(:config) {
       {
         'user_id' => 'Glen_S',
-        'password' => '',
+        'password' => 'pass',
         'template' => 'template.cpp',
         'makefile' => 'Makefile',
       }
@@ -140,6 +140,38 @@ module Clicoder
         it 'does not raise error' do
           expect{ aoj.start }.to_not raise_error
         end
+      end
+    end
+
+    describe '#submit' do
+      include_context 'after starting a problem'
+
+      context 'when user ID and password is present' do
+        it 'returns true' do
+          expect(aoj.submit).to be_true
+        end
+      end
+
+      context 'when user ID and password is not present' do
+        before(:each) do
+          FileUtils.rm('../config.yml')
+        end
+
+        it 'returns false' do
+          expect(aoj.submit).to be_false
+        end
+      end
+    end
+
+    describe '#ext_to_language_name' do
+      it 'returns "C++" for ".cpp" extension' do
+        expect(aoj.ext_to_language_name('cpp')).to eql('C++')
+        expect(aoj.ext_to_language_name('.cpp')).to eql('C++')
+      end
+
+      it 'returns "Ruby" for ".rb" extension' do
+        expect(aoj.ext_to_language_name('rb')).to eql('Ruby')
+        expect(aoj.ext_to_language_name('.rb')).to eql('Ruby')
       end
     end
 

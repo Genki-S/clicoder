@@ -12,6 +12,34 @@ RSpec.configure do |config|
       .with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'})
       .to_return(:status => 200, :body => File.read("#{FIXTURE_DIR}/webmock/aoj/get_description_0001_body.html"), :headers => {})
 
+    stub_request(:post, "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit")
+      .with(
+        :body => {
+          "userID"=>true,
+          "password"=>true,
+          "language"=>"C++",
+          "problemNO"=>"0001",
+          "sourceCode"=>"template contents",
+          "submit"=>"Send",
+        },
+        :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
+      )
+      .to_return(:status => 200, :body => 'UserID or Password is Wrong.', :headers => {})
+
+    stub_request(:post, "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit")
+      .with(
+        :body => {
+          "userID"=>"Glen_S",
+          "password"=>"pass",
+          "language"=>"C++",
+          "problemNO"=>"0001",
+          "sourceCode"=>"template contents",
+          "submit"=>"Send",
+        },
+        :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
+      )
+      .to_return(:status => 200, :body => '', :headers => {})
+
     example.run
   end
 end
