@@ -41,12 +41,28 @@ module Clicoder
       end
 
       context 'when there is no config.yml file' do
-        before(:each) do
-          FileUtils.rm('config.yml')
+        around(:each) do |example|
+          FileUtils.mv('config.yml', '_config.yml')
+          example.run
+          FileUtils.mv('_config.yml', 'config.yml')
         end
 
         it 'does not raise error and continue without configuration' do
           expect(aoj.user_id).to be_nil
+        end
+      end
+
+      context 'when in a problem directory' do
+        around(:each) do |example|
+          Dir.mkdir(aoj.work_dir)
+          Dir.chdir(aoj.work_dir) do
+            example.run
+          end
+        end
+
+        it 'loads configuration from ../config.yml file' do
+          aoj2 = AOJ.new(problem_number)
+          expect(aoj2.user_id).to eql(config['user_id'])
         end
       end
     end

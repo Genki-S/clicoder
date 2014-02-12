@@ -10,11 +10,9 @@ module Clicoder
 
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
-      if File.exists?('config.yml')
-        @config = YAML::load_file('config.yml')
-      else
-        @config = {}
-      end
+      @config = {}
+      @config.merge!(YAML::load_file('config.yml')) if File.exists?('config.yml')
+      @config.merge!(YAML::load_file('../config.yml')) if File.exists?('../config.yml')
     end
 
     def start
