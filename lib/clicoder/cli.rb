@@ -20,6 +20,18 @@ module Clicoder
         exit status
       end
 
+      desc "execute", "Execute your program using `make run`"
+      def execute
+        ensure_in_problem_directory
+        Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
+          puts "executing #{input}"
+          FileUtils.cp(input, TEMP_INPUT_FILENAME)
+          system("make execute")
+          FileUtils.cp(TEMP_OUTPUT_FILENAME, "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}")
+        end
+        FileUtils.rm([TEMP_INPUT_FILENAME, TEMP_OUTPUT_FILENAME])
+      end
+
       no_commands do
         def ensure_in_problem_directory
           @cwd = File.basename(Dir.pwd)

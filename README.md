@@ -1,4 +1,4 @@
-# Clicoder
+# CliCoder
 
 TODO: Write a gem description
 
@@ -18,7 +18,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Prepare your Makefile
+
+CliCoder uses Makefile to build and execute your program.
+
+#### "build" rule
+
+#### "execute" rule
+
+It has to run your program with redirection from "in.txt" and redirection to "out.txt".
+
+Example:
+
+    execute:
+        ./a.out < in.txt > out.txt
+
+#### Sample Makefile
 
 ## Contributing
 

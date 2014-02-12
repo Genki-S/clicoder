@@ -1,6 +1,6 @@
 build:
 	g++ main.cpp
 
-run:
-	cat
+execute:
+	./a.out < in.txt > out.txt
 
