@@ -10,7 +10,12 @@ require 'yaml'
 
 module Clicoder
   describe AOJ do
-    let(:aoj) { AOJ.new(problem_number) }
+
+    # Always return new instance to resemble CLI execution
+    def aoj
+      AOJ.new(problem_number)
+    end
+
     let(:problem_number) { 1 }
     let(:problem_id) { "%04d" % problem_number }
     let(:problem_url) { "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}" }
@@ -35,34 +40,39 @@ module Clicoder
       end
     end
 
-    describe '.new' do
-      it 'loads configuration from config.yml file' do
-        expect(aoj.user_id).to eql(config['user_id'])
-      end
-
-      context 'when there is no config.yml file' do
-        around(:each) do |example|
-          FileUtils.mv('config.yml', '_config.yml')
+    shared_context 'after starting a problem' do
+      around(:each) do |example|
+        aoj.start
+        Dir.chdir(aoj.work_dir) do
           example.run
-          FileUtils.mv('_config.yml', 'config.yml')
-        end
-
-        it 'does not raise error and continue without configuration' do
-          expect(aoj.user_id).to be_nil
         end
       end
+    end
 
-      context 'when in a problem directory' do
-        around(:each) do |example|
-          Dir.mkdir(aoj.work_dir)
-          Dir.chdir(aoj.work_dir) do
+    describe '.new' do
+      context 'before starting a problem' do
+        it 'loads configuration from config.yml file' do
+          expect(aoj.user_id).to eql(config['user_id'])
+        end
+
+        context 'when there is no config.yml file' do
+          around(:each) do |example|
+            FileUtils.mv('config.yml', '_config.yml')
             example.run
+            FileUtils.mv('_config.yml', 'config.yml')
+          end
+
+          it 'does not raise error and continue without configuration' do
+            expect(aoj.user_id).to be_nil
           end
         end
+      end
+
+      context 'after starting a problem' do
+        include_context 'after starting a problem'
 
         it 'loads configuration from ../config.yml file' do
-          aoj2 = AOJ.new(problem_number)
-          expect(aoj2.user_id).to eql(config['user_id'])
+          expect(aoj.user_id).to eql(config['user_id'])
         end
       end
     end
