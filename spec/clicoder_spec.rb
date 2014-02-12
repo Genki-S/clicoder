@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 require 'clicoder'
 require 'clicoder/aoj'
 
