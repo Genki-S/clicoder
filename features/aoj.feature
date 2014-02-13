@@ -36,3 +36,14 @@ Feature: AOJ
 		Given outputs are correct
 		When I run `clicoder aoj judge`
 		Then the output should contain "Correct Answer"
+
+	Scenario: Submit with user_id and password
+		Given in a problem directory of number 1
+		When I run `clicoder aoj submit`
+		Then the output should contain "Submission Succeeded."
+
+	Scenario: Submit without user_id and password
+		Given in a problem directory of number 1
+		Given I don't have user_id and password
+		When I run `clicoder aoj submit`
+		Then the output should contain "Submission Failed."

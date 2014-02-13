@@ -1,5 +1,5 @@
 ---
 user_id: Glen_S
-password: ''
+password: 'pass'
 template: template.cpp
 makefile: Makefile

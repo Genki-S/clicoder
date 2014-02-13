@@ -14,7 +14,7 @@ Given /^AOJ is stubbed with webmock/ do
         "password"=>true,
         "language"=>"C++",
         "problemNO"=>"0001",
-        "sourceCode"=>"template contents",
+        "sourceCode"=>File.read("#{FIXTURE_DIR}/template.cpp"),
         "submit"=>"Send",
       },
       :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
@@ -28,7 +28,7 @@ Given /^AOJ is stubbed with webmock/ do
         "password"=>"pass",
         "language"=>"C++",
         "problemNO"=>"0001",
-        "sourceCode"=>"template contents",
+        "sourceCode"=>File.read("#{FIXTURE_DIR}/template.cpp"),
         "submit"=>"Send",
       },
       :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
@@ -40,6 +40,10 @@ Given /^in a problem directory of number (\d+)/ do |problem_number|
   aoj = Clicoder::AOJ.new(problem_number)
   aoj.start
   Dir.chdir(aoj.work_dir)
+end
+
+Given /^I don't have user_id and password/ do
+  FileUtils.rm('../config.yml')
 end
 
 Given /^outputs are wrong/ do

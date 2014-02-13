@@ -50,6 +50,18 @@ module Clicoder
         exit accepted ? 0 : 1
       end
 
+      desc "submit", "Submit your program"
+      def submit
+        ensure_in_problem_directory
+        aoj = AOJ.new(1)
+        if aoj.submit
+          puts "Submission Succeeded."
+        else
+          puts "Submission Failed."
+          exit 1
+        end
+      end
+
       no_commands do
         def ensure_in_problem_directory
           @cwd = File.basename(Dir.pwd)
