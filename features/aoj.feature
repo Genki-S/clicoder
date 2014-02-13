@@ -13,15 +13,13 @@ Feature: AOJ
 	Scenario: Build a program
 		Given in a problem directory of number 1
 		When I run `clicoder aoj build`
-		Then the exit status should be 0
-		And an executable should be generated
+		Then an executable should be generated
 
 	Scenario: Run a program
 		Given in a problem directory of number 1
 		When I run `clicoder aoj build`
 		And I run `clicoder aoj execute`
-		Then the exit status should be 0
-		And my answer should be output in my outputs directory
+		Then my answer should be output in my outputs directory
 
 	Scenario: Judge wrong outputs
 		Given in a problem directory of number 1
@@ -29,8 +27,7 @@ Feature: AOJ
 		And I run `clicoder aoj execute`
 		Given outputs are wrong
 		When I run `clicoder aoj judge`
-		Then the exit status should be 1
-		And the output should contain "Wrong Answer"
+		Then the output should contain "Wrong Answer"
 
 	Scenario: Judge correct outputs
 		Given in a problem directory of number 1
@@ -38,5 +35,4 @@ Feature: AOJ
 		And I run `clicoder aoj execute`
 		Given outputs are correct
 		When I run `clicoder aoj judge`
-		Then the exit status should be 0
-		And the output should contain "Correct Answer"
+		Then the output should contain "Correct Answer"

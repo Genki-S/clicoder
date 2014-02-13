@@ -1,12 +1,16 @@
 require 'aruba/cucumber'
+require 'aruba/in_process'
+
+require 'clicoder/cli'
 
 ENV['PATH'] = "#{Dir.pwd}/bin:#{ENV['PATH']}"
+
+Aruba::InProcess.main_class = Clicoder::ArubaCLI
+Aruba.process = Aruba::InProcess
 
 Before do
   # Don't use tmp/aruba dir
   @dirs = ['.']
-  # Wait longer
-  @aruba_timeout_seconds = 10
 end
 
 Around do |scenario, block|
