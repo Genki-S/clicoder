@@ -5,77 +5,74 @@ require 'clicoder/aoj'
 require 'clicoder/judge'
 
 module Clicoder
-  module Sites
-    class Aoj < Thor
-      desc "new PROBLEM_NUMBER", "Prepare directory to deal with new problem"
-      def new(problem_number)
-        aoj = AOJ.new(problem_number)
-        aoj.start
-        puts "created directory #{aoj.work_dir}"
-      end
-
-      desc "build", "Build your program using `make build`"
-      def build
-        ensure_in_problem_directory
-        status = system('make build')
-        exit status
-      end
-
-      desc "execute", "Execute your program using `make run`"
-      def execute
-        ensure_in_problem_directory
-        Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
-          puts "executing #{input}"
-          FileUtils.cp(input, TEMP_INPUT_FILENAME)
-          system("make execute")
-          FileUtils.cp(TEMP_OUTPUT_FILENAME, "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}")
-        end
-        FileUtils.rm([TEMP_INPUT_FILENAME, TEMP_OUTPUT_FILENAME])
-      end
-
-      desc "judge", "Judge your outputs"
-      def judge
-        ensure_in_problem_directory
-        accepted = true
-        judge = Judge.new
-        Dir.glob("#{MY_OUTPUTS_DIRNAME}/*.txt").each do |my_output|
-          puts "judging #{my_output}"
-          accepted = false unless judge.judge(my_output, "#{OUTPUTS_DIRNAME}/#{File.basename(my_output)}")
-        end
-        if accepted
-          puts "Correct Answer"
-        else
-          puts "Wrong Answer"
-        end
-        exit accepted ? 0 : 1
-      end
-
-      desc "submit", "Submit your program"
-      def submit
-        ensure_in_problem_directory
-        aoj = AOJ.new(1)
-        if aoj.submit
-          puts "Submission Succeeded."
-        else
-          puts "Submission Failed."
-          exit 1
-        end
-      end
-
-      no_commands do
-        def ensure_in_problem_directory
-          @cwd = File.basename(Dir.pwd)
-          unless /\d+/ === @cwd
-            puts 'It seems you are not in probelm directory'
-            exit 1
-          end
-        end
-      end
+  class Starter < Thor
+    desc "aoj PROBLEM_NUMBER", "Prepare directory to deal with new problem from AOJ"
+    def aoj(problem_number)
+      aoj = AOJ.new(problem_number)
+      aoj.start
+      puts "created directory #{aoj.work_dir}"
     end
   end
 
   class CLI < Thor
-    register Sites::Aoj, :aoj, 'aoj', 'aizu online judge commands'
+    desc "build", "Build your program using `make build`"
+    def build
+      load_local_config
+      status = system('make build')
+      exit status
+    end
+
+    desc "execute", "Execute your program using `make run`"
+    def execute
+      load_local_config
+      Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
+        puts "executing #{input}"
+        FileUtils.cp(input, TEMP_INPUT_FILENAME)
+        system("make execute")
+        FileUtils.cp(TEMP_OUTPUT_FILENAME, "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}")
+      end
+      FileUtils.rm([TEMP_INPUT_FILENAME, TEMP_OUTPUT_FILENAME])
+    end
+
+    desc "judge", "Judge your outputs"
+    def judge
+      load_local_config
+      accepted = true
+      judge = Judge.new
+      Dir.glob("#{MY_OUTPUTS_DIRNAME}/*.txt").each do |my_output|
+        puts "judging #{my_output}"
+        accepted = false unless judge.judge(my_output, "#{OUTPUTS_DIRNAME}/#{File.basename(my_output)}")
+      end
+      if accepted
+        puts "Correct Answer"
+      else
+        puts "Wrong Answer"
+      end
+      exit accepted ? 0 : 1
+    end
+
+    desc "submit", "Submit your program"
+    def submit
+      load_local_config
+      aoj = AOJ.new(1)
+      if aoj.submit
+        puts "Submission Succeeded."
+      else
+        puts "Submission Failed."
+        exit 1
+      end
+    end
+
+    no_commands do
+      def load_local_config
+        unless File.exists?('.config.yml')
+          puts 'It seems you are not in probelm directory'
+          exit 1
+        end
+        @local_config = YAML::load_file('.config.yml')
+      end
+    end
+    register Starter, 'new', 'new <command>', 'start a new problem'
   end
 
   # Use aruba in-process

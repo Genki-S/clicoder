@@ -27,6 +27,10 @@ module Clicoder
       download_outputs
       copy_template
       copy_makefile
+
+      # Store local config
+      local_config = { site: 'aoj' }
+      File.open("#{work_dir}/.config.yml", 'w') { |f| f.write(local_config.to_yaml) }
     end
 
     def submit
