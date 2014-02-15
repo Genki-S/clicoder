@@ -4,6 +4,7 @@ require 'yaml'
 require 'net/http'
 
 require 'clicoder'
+require 'clicoder/config'
 
 module Clicoder
   class AOJ
@@ -12,13 +13,8 @@ module Clicoder
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
       @submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
-      # NOTE: This is here to evaluate stubbed ENV['HOME'] on each RSpec run
-      @config_dir = "#{ENV['HOME']}/.clicoder.d"
-      config_file = "#{@config_dir}/config.yml"
-      @config = Hash.new { '' }
-      all_config = File.exists?(config_file) ? YAML::load_file(config_file) : {}
-      aoj_config = all_config.has_key?('aoj') ? all_config['aoj'] : {}
-      @config.merge!(aoj_config)
+      @config = Config.new
+      @aoj_config = @config.global.has_key?('aoj') ? @config.global['aoj'] : Hash.new { '' }
     end
 
     def start
@@ -36,7 +32,7 @@ module Clicoder
     def submit
       post_params = {
         userID: user_id,
-        password: @config['password'],
+        password: @aoj_config['password'],
         problemNO: @problem_id,
         language: ext_to_language_name(File.extname(main_program)),
         sourceCode: File.read(main_program),
@@ -76,15 +72,15 @@ module Clicoder
     end
 
     def copy_template
-      template_file = File.expand_path(@config['template'], @config_dir)
-      return unless File.exists?(template_file)
+      template_file = File.expand_path(@aoj_config['template'], @config.global_config_dir)
+      return unless File.file?(template_file)
       ext = File.extname(template_file)
       FileUtils.cp(template_file, "#{@problem_id}/main#{ext}")
     end
 
     def copy_makefile
-      makefile = File.expand_path(@config['makefile'], @config_dir)
-      return unless File.exists?(makefile)
+      makefile = File.expand_path(@aoj_config['makefile'], @config.global_config_dir)
+      return unless File.file?(makefile)
       ext = File.extname(makefile)
       FileUtils.cp(makefile, "#{@problem_id}/Makefile")
     end
@@ -104,7 +100,7 @@ module Clicoder
     end
 
     def user_id
-      @config['user_id']
+      @aoj_config['user_id']
     end
 
     def work_dir

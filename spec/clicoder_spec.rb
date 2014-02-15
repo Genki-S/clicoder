@@ -2,8 +2,8 @@ require 'spec_helper'
 
 require 'clicoder'
 require 'clicoder/aoj'
+require 'clicoder/config'
 
-require 'tmpdir'
 require 'open-uri'
 require 'nokogiri'
 require 'yaml'
@@ -16,30 +16,16 @@ module Clicoder
       AOJ.new(problem_number)
     end
 
-    def config
-      File.exists?(config_file) ? YAML::load_file(config_file) : {}
-    end
-
     let(:problem_number) { 1 }
     let(:problem_id) { "%04d" % problem_number }
     let(:problem_url) { "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}" }
     let(:xml_document) { Nokogiri::HTML(open(problem_url)) }
-    let(:config_dir) { "#{ENV['HOME']}/.clicoder.d" }
-    let(:config_file) { "#{config_dir}/config.yml" }
+    let(:config) { Config.new }
 
-    around(:each) do |example|
-      Dir.mktmpdir do |dir|
-        Dir.chdir(dir) do
-          FileUtils.cp_r("#{FIXTURE_DIR}/clicoder.d", '.clicoder.d')
-          ENV['HOME'] = Dir.pwd
-          example.run
-        end
-      end
-    end
-
-    shared_context 'when config file is not present', config: :absent do
-      around(:each) do |example|
-        FileUtils.rm(config_file)
+    shared_context 'when config is not present', config: :absent do
+      before do
+        Config.any_instance.stub(:global).and_return({})
+        Config.any_instance.stub(:local).and_return({})
       end
     end
 
@@ -54,18 +40,18 @@ module Clicoder
 
     describe '.new' do
       it 'loads configuration from config file' do
-        expect(aoj.user_id).to eql(config['aoj']['user_id'])
+        expect(aoj.user_id).to eql(config.global['aoj']['user_id'])
       end
 
       context 'when there is no config file', config: :absent do
         it 'does not raise error and continue without configuration' do
-          expect(aoj.user_id).to be_nil
+          expect(aoj.user_id).to eql('')
         end
       end
     end
 
     describe '#start' do
-      context 'when config file is present' do
+      context 'when config is present' do
         before(:each) do
           aoj.start
         end
@@ -104,7 +90,7 @@ module Clicoder
         end
 
         it 'copies template file specified by config file into problem directory named main.ext' do
-          template = File.expand_path(config['aoj']['template'], config_dir)
+          template = File.expand_path(config.global['aoj']['template'], config.global_config_dir)
           ext = File.extname(template)
           Dir.chdir(aoj.work_dir) do
             expect(File.read("main#{ext}")).to eql(File.read(template))
@@ -112,14 +98,14 @@ module Clicoder
         end
 
         it 'copies Makefile specified by config file into problem directory' do
-          makefile = File.expand_path(config['aoj']['makefile'], config_dir)
+          makefile = File.expand_path(config.global['aoj']['makefile'], config.global_config_dir)
           Dir.chdir(aoj.work_dir) do
             expect(File.read('Makefile')).to eql(File.read(makefile))
           end
         end
       end
 
-      context 'when config file is not present', config: :absent do
+      context 'when config is not present', config: :absent do
         it 'does not raise error' do
           expect{ aoj.start }.to_not raise_error
         end

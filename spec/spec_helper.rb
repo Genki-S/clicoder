@@ -1,3 +1,5 @@
+require 'tmpdir'
+
 require 'webmock/rspec'
 
 GEM_ROOT = Gem::Specification.find_by_name('clicoder').gem_dir
@@ -40,6 +42,13 @@ RSpec.configure do |config|
       )
       .to_return(:status => 200, :body => '', :headers => {})
 
-    example.run
+    # Make tmpdir HOME and copy config and template files
+    Dir.mktmpdir do |dir|
+      Dir.chdir(dir) do
+        FileUtils.cp_r("#{FIXTURE_DIR}/clicoder.d", '.clicoder.d')
+        ENV['HOME'] = Dir.pwd
+        example.run
+      end
+    end
   end
 end
