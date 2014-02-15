@@ -44,7 +44,7 @@ module Clicoder
 
     def prepare_directories
       FileUtils.mkdir_p(@problem_id)
-      Dir.chdir(@problem_id) do
+      Dir.chdir(work_dir) do
         FileUtils.mkdir_p(INPUTS_DIRNAME)
         FileUtils.mkdir_p(OUTPUTS_DIRNAME)
         FileUtils.mkdir_p(MY_OUTPUTS_DIRNAME)
@@ -52,7 +52,7 @@ module Clicoder
     end
 
     def download_inputs
-      Dir.chdir("#{@problem_id}/#{INPUTS_DIRNAME}") do
+      Dir.chdir("#{work_dir}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(input)
@@ -62,7 +62,7 @@ module Clicoder
     end
 
     def download_outputs
-      Dir.chdir("#{@problem_id}/#{OUTPUTS_DIRNAME}") do
+      Dir.chdir("#{work_dir}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(output)
