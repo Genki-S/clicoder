@@ -16,31 +16,34 @@ module Clicoder
       AOJ.new(problem_number)
     end
 
+    def config
+      File.exists?(config_file) ? YAML::load_file(config_file) : {}
+    end
+
     let(:problem_number) { 1 }
     let(:problem_id) { "%04d" % problem_number }
     let(:problem_url) { "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}" }
     let(:xml_document) { Nokogiri::HTML(open(problem_url)) }
-    let(:config) {
-      {
-        'user_id' => 'Glen_S',
-        'password' => 'pass',
-        'template' => 'template.cpp',
-        'makefile' => 'Makefile',
-      }
-    }
+    let(:config_dir) { "#{ENV['HOME']}/.clicoder.d" }
+    let(:config_file) { "#{config_dir}/config.yml" }
 
     around(:each) do |example|
       Dir.mktmpdir do |dir|
         Dir.chdir(dir) do
-          File.open('config.yml', 'w') { |f| f.write(config.to_yaml) }
-          File.open(config['template'], 'w') { |f| f.write('template contents') }
-          File.open(config['makefile'], 'w') { |f| f.write('makefile contents') }
+          FileUtils.cp_r("#{FIXTURE_DIR}/clicoder.d", '.clicoder.d')
+          ENV['HOME'] = Dir.pwd
           example.run
         end
       end
     end
 
-    shared_context 'after starting a problem' do
+    shared_context 'when config file is not present', config: :absent do
+      around(:each) do |example|
+        FileUtils.rm(config_file)
+      end
+    end
+
+    shared_context 'in a problem directory', cwd: :problem do
       around(:each) do |example|
         aoj.start
         Dir.chdir(aoj.work_dir) do
@@ -50,35 +53,19 @@ module Clicoder
     end
 
     describe '.new' do
-      context 'before starting a problem' do
-        it 'loads configuration from config.yml file' do
-          expect(aoj.user_id).to eql(config['user_id'])
-        end
-
-        context 'when there is no config.yml file' do
-          around(:each) do |example|
-            FileUtils.mv('config.yml', '_config.yml')
-            example.run
-            FileUtils.mv('_config.yml', 'config.yml')
-          end
-
-          it 'does not raise error and continue without configuration' do
-            expect(aoj.user_id).to be_nil
-          end
-        end
+      it 'loads configuration from config file' do
+        expect(aoj.user_id).to eql(config['aoj']['user_id'])
       end
 
-      context 'after starting a problem' do
-        include_context 'after starting a problem'
-
-        it 'loads configuration from ../config.yml file' do
-          expect(aoj.user_id).to eql(config['user_id'])
+      context 'when there is no config file', config: :absent do
+        it 'does not raise error and continue without configuration' do
+          expect(aoj.user_id).to be_nil
         end
       end
     end
 
     describe '#start' do
-      context 'when config.yml is present' do
+      context 'when config file is present' do
         before(:each) do
           aoj.start
         end
@@ -89,7 +76,7 @@ module Clicoder
 
         it 'prepares directories for inputs, outpus, and myoutputs' do
           dirs = [INPUTS_DIRNAME, OUTPUTS_DIRNAME, MY_OUTPUTS_DIRNAME]
-          Dir.chdir(problem_id) do
+          Dir.chdir(aoj.work_dir) do
             dirs.each do |d|
               expect(File.directory?(d)).to be_true
             end
@@ -116,47 +103,37 @@ module Clicoder
           end
         end
 
-        it 'copies template file specified by config.yml into problem directory named main.ext' do
-          template = File.expand_path(config['template'], Dir.pwd)
+        it 'copies template file specified by config file into problem directory named main.ext' do
+          template = File.expand_path(config['aoj']['template'], config_dir)
           ext = File.extname(template)
-          Dir.chdir(problem_id) do
+          Dir.chdir(aoj.work_dir) do
             expect(File.read("main#{ext}")).to eql(File.read(template))
           end
         end
 
-        it 'copies Makefile specified by config.yml into problem directory' do
-          makefile = File.expand_path(config['makefile'], Dir.pwd)
-          Dir.chdir(problem_id) do
+        it 'copies Makefile specified by config file into problem directory' do
+          makefile = File.expand_path(config['aoj']['makefile'], config_dir)
+          Dir.chdir(aoj.work_dir) do
             expect(File.read('Makefile')).to eql(File.read(makefile))
           end
         end
       end
 
-      context 'when config.yml is not present' do
-        before(:each) do
-          FileUtils.rm('config.yml')
-        end
-
+      context 'when config file is not present', config: :absent do
         it 'does not raise error' do
           expect{ aoj.start }.to_not raise_error
         end
       end
     end
 
-    describe '#submit' do
-      include_context 'after starting a problem'
-
+    describe '#submit', cwd: :problem do
       context 'when user ID and password is present' do
         it 'returns true' do
           expect(aoj.submit).to be_true
         end
       end
 
-      context 'when user ID and password is not present' do
-        before(:each) do
-          FileUtils.rm('../config.yml')
-        end
-
+      context 'when user ID and password is not present', config: :absent do
         it 'returns false' do
           expect(aoj.submit).to be_false
         end

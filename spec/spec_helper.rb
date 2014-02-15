@@ -15,11 +15,11 @@ RSpec.configure do |config|
     stub_request(:post, "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit")
       .with(
         :body => {
-          "userID"=>true,
-          "password"=>true,
+          "userID"=>"",
+          "password"=>"",
           "language"=>"C++",
           "problemNO"=>"0001",
-          "sourceCode"=>"template contents",
+          "sourceCode"=>File.read("#{FIXTURE_DIR}/clicoder.d/template.cpp"),
           "submit"=>"Send",
         },
         :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
@@ -33,7 +33,7 @@ RSpec.configure do |config|
           "password"=>"pass",
           "language"=>"C++",
           "problemNO"=>"0001",
-          "sourceCode"=>"template contents",
+          "sourceCode"=>File.read("#{FIXTURE_DIR}/clicoder.d/template.cpp"),
           "submit"=>"Send",
         },
         :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}

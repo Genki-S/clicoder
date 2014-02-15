@@ -12,9 +12,13 @@ module Clicoder
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
       @submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
-      @config = {}
-      @config.merge!(YAML::load_file('config.yml')) if File.exists?('config.yml')
-      @config.merge!(YAML::load_file('../config.yml')) if File.exists?('../config.yml')
+      # NOTE: This is here to evaluate stubbed ENV['HOME'] on each RSpec run
+      @config_dir = "#{ENV['HOME']}/.clicoder.d"
+      config_file = "#{@config_dir}/config.yml"
+      @config = Hash.new { '' }
+      all_config = File.exists?(config_file) ? YAML::load_file(config_file) : {}
+      aoj_config = all_config.has_key?('aoj') ? all_config['aoj'] : {}
+      @config.merge!(aoj_config)
     end
 
     def start
@@ -68,15 +72,17 @@ module Clicoder
     end
 
     def copy_template
-      return unless @config['template'] && File.exists?(@config['template'])
-      ext = File.extname(@config['template'])
-      FileUtils.cp(@config['template'], "#{@problem_id}/main#{ext}")
+      template_file = File.expand_path(@config['template'], @config_dir)
+      return unless File.exists?(template_file)
+      ext = File.extname(template_file)
+      FileUtils.cp(template_file, "#{@problem_id}/main#{ext}")
     end
 
     def copy_makefile
-      return unless @config['makefile'] && File.exists?(@config['makefile'])
-      ext = File.extname(@config['makefile'])
-      FileUtils.cp(@config['makefile'], "#{@problem_id}/Makefile")
+      makefile = File.expand_path(@config['makefile'], @config_dir)
+      return unless File.exists?(makefile)
+      ext = File.extname(makefile)
+      FileUtils.cp(makefile, "#{@problem_id}/Makefile")
     end
 
     def fetch_inputs

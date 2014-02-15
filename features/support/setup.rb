@@ -14,15 +14,10 @@ Before do
 end
 
 Around do |scenario, block|
-  config = File.expand_path('fixtures/config.yml', Dir.pwd)
-  template = File.expand_path('fixtures/template.cpp', Dir.pwd)
-  makefile = File.expand_path('fixtures/Makefile', Dir.pwd)
-
   Dir.mktmpdir do |dir|
     Dir.chdir(dir) do
-      [config, template, makefile].each do |file|
-        FileUtils.cp(file, '.')
-      end
+      ENV['HOME'] = Dir.pwd
+      FileUtils.cp_r("#{FIXTURE_DIR}/clicoder.d", '.clicoder.d')
 
       block.call
     end

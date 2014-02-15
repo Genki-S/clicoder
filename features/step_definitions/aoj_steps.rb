@@ -10,11 +10,11 @@ Given /^AOJ is stubbed with webmock/ do
   stub_request(:post, "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit")
     .with(
       :body => {
-        "userID"=>true,
-        "password"=>true,
+        "userID"=>"",
+        "password"=>"",
         "language"=>"C++",
         "problemNO"=>"0001",
-        "sourceCode"=>File.read("#{FIXTURE_DIR}/template.cpp"),
+        "sourceCode"=>File.read("#{FIXTURE_DIR}/clicoder.d/template.cpp"),
         "submit"=>"Send",
       },
       :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
@@ -28,7 +28,7 @@ Given /^AOJ is stubbed with webmock/ do
         "password"=>"pass",
         "language"=>"C++",
         "problemNO"=>"0001",
-        "sourceCode"=>File.read("#{FIXTURE_DIR}/template.cpp"),
+        "sourceCode"=>File.read("#{FIXTURE_DIR}/clicoder.d/template.cpp"),
         "submit"=>"Send",
       },
       :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
@@ -43,7 +43,7 @@ Given /^in a problem directory of number (\d+)/ do |problem_number|
 end
 
 Given /^I don't have user_id and password/ do
-  FileUtils.rm('../config.yml')
+  FileUtils.rm("#{ENV['HOME']}/.clicoder.d/config.yml")
 end
 
 Given /^outputs are wrong/ do
