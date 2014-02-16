@@ -14,7 +14,8 @@ module Clicoder
       @problem_id = "%04d" % problem_number
       @submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
       @config = Config.new
-      @aoj_config = @config.global.has_key?('aoj') ? @config.global['aoj'] : Hash.new { '' }
+      @aoj_config = Hash.new { '' }
+      @aoj_config.merge!(@config.global['aoj']) if @config.global.has_key?('aoj')
     end
 
     def start
