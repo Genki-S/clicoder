@@ -54,6 +54,23 @@ Given /^outputs are correct/ do
   FileUtils.cp(Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*.txt"), Clicoder::MY_OUTPUTS_DIRNAME)
 end
 
+Given /^the answer differs in second decimal place/ do
+  FileUtils.rm(Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*"))
+  FileUtils.rm(Dir.glob("#{Clicoder::MY_OUTPUTS_DIRNAME}/*"))
+  File.open("#{Clicoder::OUTPUTS_DIRNAME}/0.txt", 'w') do |f|
+    f.write(<<-EOS)
+    0.11 0.11
+    0.13 0.13
+    EOS
+  end
+  File.open("#{Clicoder::MY_OUTPUTS_DIRNAME}/0.txt", 'w') do |f|
+    f.write(<<-EOS)
+    0.12 0.12
+    0.12 0.12
+    EOS
+  end
+end
+
 Then /^an executable should be generated/ do
   expect(File.exists?('a.out')).to be_true
 end

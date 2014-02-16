@@ -37,6 +37,24 @@ Feature: AOJ
 		When I run `clicoder judge`
 		Then the output should contain "Correct Answer"
 
+	Scenario: Judge outputs within allowed absolute error
+		Given in a problem directory of number 1
+		And the answer differs in second decimal place
+		When I run `clicoder judge`
+		Then the output should contain "Wrong Answer"
+
+	Scenario: Judge outputs within allowed absolute error
+		Given in a problem directory of number 1
+		And the answer differs in second decimal place
+		When I run `clicoder judge -d 2`
+		Then the output should contain "Wrong Answer"
+
+	Scenario: Judge outputs within allowed absolute error
+		Given in a problem directory of number 1
+		And the answer differs in second decimal place
+		When I run `clicoder judge -d 1`
+		Then the output should contain "Correct Answer"
+
 	Scenario: Submit with user_id and password
 		Given in a problem directory of number 1
 		When I run `clicoder submit`

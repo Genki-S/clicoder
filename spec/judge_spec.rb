@@ -7,7 +7,7 @@ require 'tempfile'
 
 module Clicoder
   describe Judge do
-    let(:judge) { Judge.new }
+    let(:judge) { Judge.new( {} ) }
 
     describe '#diff_judge' do
       before(:all) do

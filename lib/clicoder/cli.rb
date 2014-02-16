@@ -35,10 +35,11 @@ module Clicoder
     end
 
     desc "judge", "Judge your outputs"
+    method_option :decimal, type: :numeric, aliases: '-d', desc: 'Decimal position of allowed absolute error'
     def judge
       load_local_config
       accepted = true
-      judge = Judge.new
+      judge = Judge.new(options)
       Dir.glob("#{MY_OUTPUTS_DIRNAME}/*.txt").each do |my_output|
         puts "judging #{my_output}"
         accepted = false unless judge.judge(my_output, "#{OUTPUTS_DIRNAME}/#{File.basename(my_output)}")

@@ -1,7 +1,15 @@
 module Clicoder
   class Judge
+    def initialize(options)
+      @options = options
+    end
+
     def judge(file1, file2)
-      diff_judge(file1, file2)
+      if @options[:decimal]
+        float_judge(file1, file2, 10**(- @options[:decimal]))
+      else
+        diff_judge(file1, file2)
+      end
     end
 
     def diff_judge(file1, file2)
