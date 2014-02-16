@@ -12,6 +12,7 @@ module Clicoder
     include Helper
 
     # Parameters
+    abstract_method :site_name
     abstract_method :problem_url
     abstract_method :inputs_xpath
     abstract_method :outputs_xpath

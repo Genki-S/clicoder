@@ -1,6 +1,8 @@
 require "clicoder/version"
 
 module Clicoder
+  GEM_ROOT = Gem::Specification.find_by_name('clicoder').gem_dir
+
   INPUTS_DIRNAME = 'inputs'
   OUTPUTS_DIRNAME = 'outputs'
   MY_OUTPUTS_DIRNAME = 'my_outputs'
