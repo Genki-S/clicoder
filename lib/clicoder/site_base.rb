@@ -26,6 +26,7 @@ module Clicoder
       download_outputs
       copy_template
       copy_makefile
+      store_local_config
     end
 
     def prepare_directories
@@ -79,6 +80,13 @@ module Clicoder
     def fetch_outputs
       outputs_nodes = xml_document.xpath(outputs_xpath)
       outputs_nodes.map { |node| node.text.strip }
+    end
+
+    def store_local_config
+      config.local['site'] = site_name
+      File.open("#{working_directory}/.config.yml", 'w') do |f|
+        f.write(config.local.to_yaml)
+      end
     end
 
     def xml_document

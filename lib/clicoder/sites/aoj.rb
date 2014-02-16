@@ -24,6 +24,10 @@ module Clicoder
       return response.body !~ /UserID or Password is Wrong/
     end
 
+    def site_name
+      'aoj'
+    end
+
     def problem_url
       "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{@problem_id}"
     end

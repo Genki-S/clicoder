@@ -13,6 +13,7 @@ module Clicoder
 
     let(:abstract_methods) do
       %i(
+        site_name
         problem_url
         inputs_xpath
         outputs_xpath
@@ -36,6 +37,7 @@ module Clicoder
 
     context 'when all abstract methods are stubbed' do
       before do
+        site_base.stub(:site_name).and_return('sample_site')
         site_base.stub(:problem_url).and_return("#{FIXTURE_DIR}/sample_problem.html")
         site_base.stub(:inputs_xpath).and_return('//div[@id="inputs"]/pre')
         site_base.stub(:outputs_xpath).and_return('//div[@id="outputs"]/pre')
@@ -43,7 +45,10 @@ module Clicoder
       end
 
       describe '#start' do
-        before { site_base.start }
+        before do
+          config.local['site'] = site_base.site_name
+          site_base.start
+        end
 
         it 'creates working directory specified by #working_directory' do
           expect(File.directory?(site_base.working_directory)).to be_true
@@ -90,6 +95,12 @@ module Clicoder
           makefile = File.expand_path(config.makefile, config.global_config_dir)
           Dir.chdir(site_base.working_directory) do
             expect(File.read('Makefile')).to eql(File.read(makefile))
+          end
+        end
+
+        it 'stores local configuration' do
+          Dir.chdir(site_base.working_directory) do
+            expect(YAML::load_file('.config.yml')).to eql(config.local)
           end
         end
 
