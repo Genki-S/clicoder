@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- need for problem description -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=SHIFT-JIS" /> <!-- for only description.jsp-->
+<title>AIZU ONLINE JUDGE</title>
+<link rel="stylesheet" href="css/frame.css" type="text/css" media="all" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="css/sp.css" type="text/css" media="all" />
+<link rel="stylesheet" href="css/login.css" type="text/css" media="all" />
+<link rel="shortcut icon" href="favicon.ico"/>
+<script src="http://www.google.com/jsapi"></script>
+<script>
+google.load("chrome-frame", "1.0.2");
+google.load("jquery", "1.5.1");
+google.load("jqueryui", "1.8.10");
+google.load("webfont", "1.0.19");
+google.setOnLoadCallback(function(){WebFont.load({google: {families: ['PT Sans Narrow','Droid Sans','Droid Serif','Cousine']}});});</script>
+<script language="JavaScript" type="text/javascript" src="js/jquery.browser.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/jquery.cookie.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/script.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/login.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/varmath.js" charset="UTF-8"></script>
+<!-- icon -->
+<!-- <link rel="shortcut icon" href="http://" />???-->
+
+<link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.6.custom.css" type="text/css" />
+<link rel="stylesheet" href="css/rose.css" type="text/css" />
+<link rel="stylesheet" href="css/description.css" type="text/css" />
+<script language="JavaScript" type="text/javascript" src="js/analytics.js"></script>
+
+</head>
+<body id="niceBody" class="goodStyle">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+    $('#tree #treeProblem .trigger2').each(function(i) {
+        $(this).hover(
+            function(){
+                var menuPos = $(this).position();
+                var w = 168 + $(this).width();
+                var tl = menuPos.top + 40;
+                var targetSubTree = i+1;
+                $('#nav #subtree').attr('data-target', 0).css({'margin': '' + tl + 'px 0px 0px ' + w + 'px'}).show();
+                $('#nav #subtree .dat').hide();
+                $('#nav #subtree .dat:nth-child('+targetSubTree+')').show();
+                $(this).addClass('active');
+            },
+            function(){
+                $(this).removeClass('active');
+                $('#nav #subtree').hide();
+            }
+        );
+    });
+    $('#nav #subtree').hover(
+            function() {
+                //var targetTrigger = 2 * $('#nav #tree').attr('data-target') + 1; // 2n+1
+                $(this).show();
+                $('#nav #tree').show();
+                //$('#nav #menu a:nth-child('+targetTrigger+')').addClass('active');
+            },
+            function(){
+                $(this).hide();
+                //$('#nav #menu .trigger').removeClass('active');
+            }
+    );
+
+});
+</script>
+
+	<div id="logo"><a href="index.jsp" id="home">AIZU ONLINE JUDGE</a></div>
+	<div id="nav">
+		<div class="wrapper">
+			<div id="menu">
+				<a href="javascript:void(0)" class="link" id="menuPagetop">PAGETOP</a>
+				<div class="split">&nbsp;</div>
+				<a href="#" class="link trigger" id="menuProblem">PROBLEM</a>
+				<div class="split">&nbsp;</div>
+				<a href="ranking.jsp" class="link trigger" id="menuRank">RANKING</a>
+				<div class="split">&nbsp;</div>
+				<a href="status.jsp" class="link trigger" id="menuStatus">STATUS</a>
+				<div class="split">&nbsp;</div>
+				<a href="contest.jsp" class="link trigger" id="menuContest">CONTEST</a>
+				<div class="split">&nbsp;</div>
+				<a href="course.jsp#all" class="link trigger" id="menuCourse">COURSE</a>
+				<div class="split">&nbsp;</div>
+
+
+				<span class="spacer1">&nbsp;</span>
+			</div>
+			<div id="tree" data-target="0">
+				<div class="dat" id="treeProblem">
+					<a class="link trigger2" href="#"><span class="label">Introduction</span><span class="caption"><span class="padding12">:</span>Lesson and Library</span></a>
+					<a href="finder.jsp?volumeNo=100"><span class="label">Volume 100</span><span class="caption"><span class="padding12">:</span>Problem set from courses.</span></a>
+					<a href="finder.jsp?volumeNo=0"><span class="label">Volume 0</span><span class="caption"><span class="padding12">:</span>All-Japan High School Programming Contest.</span></a>
+					<a href="finder.jsp?volumeNo=1"><span class="label">Volume 1</span><span class="caption"><span class="padding12">:</span>All-Japan High School Programming Contest.</span></a>
+					<a href="finder.jsp?volumeNo=2"><span class="label">Volume 2</span><span class="caption"><span class="padding12">:</span>All-Japan High School Programming Contest.</span></a>
+	
+
+					<a href="finder.jsp?volumeNo=5"><span class="label">Volume 5</span><span class="caption"><span class="padding12">:</span>Japanese Olympiad in Informatics.</span></a>
+					<a href="finder.jsp?volumeNo=10"><span class="label">Volume 10</span><span class="caption"><span class="padding12">:</span>University of Aizu Programming Contest.</span></a>
+					<a href="finder.jsp?volumeNo=11"><span class="label">Volume 11</span><span class="caption"><span class="padding12">:</span>ACM-ICPC Japan Domestic Contest.</span></a>
+					<a href="finder.jsp?volumeNo=12"><span class="label">Volume 12</span><span class="caption"><span class="padding12">:</span>ACM-ICPC Asia Regional in Japan.</span></a>
+					<a href="finder.jsp?volumeNo=13"><span class="label">Volume 13</span><span class="caption"><span class="padding12">:</span>ACM-ICPC Asia Regional in Japan.</span></a>
+					<a href="finder.jsp?volumeNo=15"><span class="label">Volume 15</span><span class="caption"><span class="padding12">:</span>University of Aizu Programming Contest.</span></a>
+					<a href="finder.jsp?volumeNo=20"><span class="label">Volume 20</span><span class="caption"><span class="padding12">:</span>ACM-ICPC JAG, Programming Contests.</span></a>
+					<a href="finder.jsp?volumeNo=21"><span class="label">Volume 21</span><span class="caption"><span class="padding12">:</span>ACM-ICPC JAG, Programming Contests.</span></a>
+					<a href="finder.jsp?volumeNo=22"><span class="label">Volume 22</span><span class="caption"><span class="padding12">:</span>ACM-ICPC JAG, Programming Contests.</span></a>
+					<a href="finder.jsp?volumeNo=23"><span class="label">Volume 23</span><span class="caption"><span class="padding12">:</span>ACM-ICPC JAG, Programming Contests.</span></a>
+					<a href="finder.jsp?volumeNo=24"><span class="label">Volume 24</span><span class="caption"><span class="padding12">:</span>ACM-ICPC JAG, Programming Contests.</span></a>
+					<a href="finder.jsp?volumeNo=25"><span class="label">Volume 25</span><span class="caption"><span class="padding12">:</span>ACM-ICPC JAG, Programming Contests.</span></a>
+
+				</div>
+				<div class="dat" id="treePank">
+					<a href="ranking.jsp?criteria=0">Order by Solved</a>
+					<a href="ranking.jsp?criteria=1">Order by Rating</a>
+					<a href="ranking.jsp?criteria=2">Order by Diff</a>
+				</div>
+				<div class="dat" id="treeStatus">
+					<a href="status.jsp">Last 200 Sub.</a>
+					<!--<a href="#">User Detail</a>-->
+				</div>
+				<div class="dat" id="treeContest">
+					<a href="contest.jsp">Contest</a>
+					<!--<a href="#">User Detail</a>-->
+				</div>
+				<div class="dat" id="treeCourse">
+					<a href="course.jsp#all">All</a>
+					<a href="course.jsp#lesson">Lesson</a>
+					<a href="course.jsp#library">Library</a>
+				</div>
+			</div>
+			<div id="subtree" data-target="0">
+				<div class="dat">
+				  <a href="finder.jsp?course=ITP1">Introduction to Programming</a>
+				  <a href="finder.jsp?course=ALDS1">Introduction to Algorithms and Data Structures</a>
+				  <a href="finder.jsp?course=DSL">Library of Data Structures</a>
+				  <a href="finder.jsp?course=GRL">Library of Graph Algorithms</a>
+				  <a href="finder.jsp?course=CGL">Library of Computational Geometry</a>
+				  <a href="finder.jsp?course=DPL">Library of Dynamic Programming</a>
+				  <a href="finder.jsp?course=NTL">Library of Number Theory</a>
+				</div>
+			</div>
+			<div id="user">
+			  
+			  <a href="javascript:void(0);" class="signup" id="login"><span class="line">Login</span></a>
+			  <div id="loginBox" class="userBox">     
+			    <!--<form id="loginForm" class="userForm" method="post" action="index.jsp">-->
+			    <form id="loginForm" class="userForm" method="post" action="">
+			      <fieldset id="body">
+				<fieldset>
+				  <label for="loginUserID">User ID</label>
+				  <input type="text" name="loginUserID" id="loginUserID" />
+				</fieldset>
+				<fieldset>
+				  <label for="loginPassword">Password</label>
+				  <input type="password" name="loginPassword" id="loginPassword" />
+				</fieldset>
+				<input type="submit" name="submit" id="logininput" value="Sign in" />
+				
+				<!--<label for="checkbox"><input type="checkbox" id="checkbox" />Remember me</label>-->
+			      </fieldset>
+			      <!--<span><a href="#">Forgot your password?</a></span>-->
+			    </form>
+			  </div>
+			  <a href="javascript:void(0);" class="signup" id="register"><span class="line">Register/Setting</span></a>
+			  <div id="registerBox" class="userBox">     
+			    <form id="registerForm" class="userForm" method="post" action="index.jsp">
+			      <fieldset id="body">
+			      <a href="register.jsp">Register/Setting</a>
+				<span class="spacer1">&nbsp;</span>
+			      <a href="update.jsp">Update Info.</a>
+				<span class="spacer1">&nbsp;</span>
+			      <a href="psupdate.jsp">Update Pass.</a>
+			      </fieldset>
+			    </form>
+			  </div>
+		
+
+			  
+			</div>
+		</div>
+	</div>
+	<div id="header">
+		<div class="wrapper">
+			<div id="lang">
+				<a href="index.jsp?lang=ja" id="langJp">Japanese</a>
+				<span class="padding6 small0">&nbsp;</span>
+				<a href="index.jsp?lang=en" id="langEn" class="active">English</a>
+			</div>
+			<div id="pwd">
+			  
+				<a href="introduction.jsp" id="help">For beginners&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a href="index.jsp" class="now">HOME</a><span class="padding6">-</span>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<script type="text/javascript">
+$(function(){
+    $('#dialog').dialog({
+        width:740,
+        autoOpen: false,
+        title:'Submission Form',
+
+        buttons: {
+            'Submit': function(){
+                $('#sform').submit();
+            },
+            'Reset': function(){
+                $('#source').val('');
+            },
+            'Cancel': function() { 
+                $(this).dialog("close"); 
+            }
+       }
+    });
+    // Dialog Link
+    $('#problemSubmit').click(function(){
+        $('#dialog').dialog('open');
+        return false;
+    });
+});
+</script>
+
+<div id="dialog" style="display : none; overflow:hidden">
+<FORM id="sform"  ACTION="/onlinejudge/servlet/Submit" METHOD="POST">
+<fieldset class="form">
+<TABLE class="form" width="740" border="0" cellspacing="0" cellpadding="0">
+	<TR>
+		<TD width="100"><label>User ID:</label></TD>
+		<TD><INPUT TYPE="TEXT" NAME="userID" VALUE=""></TD>
+	</TR>
+	<TR>
+		<TD width="100"><label>Password:</label></TD>
+		<TD><INPUT TYPE="PASSWORD" NAME="password" VALUE=""></TD>
+	</TR>
+	<TR>
+	        <TD width="100"><label>Problem NO:</label></TD>
+		<TD><INPUT TYPE="TEXT" NAME="problemNO" VALUE="0001"></TD>
+	</TR>
+	<TR>
+	        <TD width="100"><label>Language:</label></TD>
+		<TD>
+		<SELECT NAME="language">
+		  
+
+                  
+                      <OPTION VALUE="C">C
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="C++" selected="selected">C++
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="JAVA">JAVA
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="C++11">C++11
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="C#">C#
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="D">D
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="Ruby">Ruby
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="Python">Python
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="PHP">PHP
+                  
+
+
+
+		  
+
+                  
+                      <OPTION VALUE="JavaScript">JavaScript
+                  
+
+
+
+		  
+		</SELECT>
+<font color="#aaa">&nbsp; *&nbsp;It depends on the problem</font>
+		</TD>
+		</tr>
+		
+	<TR>
+	        <TD width="100"><label>Source Code:</label></TD>
+		<TD><TEXTAREA id="source" NAME="sourceCode" ROWS="16" COLS="62"></TEXTAREA></TD>
+	</TR>
+</TABLE>
+</fieldset>
+</FORM>
+</div>
+
+
+
+
+
+
+<div id="contents">
+	<div id="pageinfo">
+		<div class="wrapper">
+			<div class="subinfo">
+                              
+				<!--<a href="problem_tags.jsp?pid=0001" id="problemTag" class="icon" title="Tag">Tag</a>-->
+				<a href="annotation.jsp?pid=0001" id="problemTag" class="icon" title="Tag">Tag</a>
+				<a href="board.jsp?pid=0001" id="problemDiscussion" class="icon" title="Discussion">Discussion</a>
+				<a href="solution.jsp?pid=0001" id="problemSolution" class="icon" title="Solution">Solution</a>
+				<a href="problem_statistics.jsp?id=0001" id="problemStatistics" class="icon" title="Statistics">Statistics</a>
+				<a href="#" id="problemSubmit" class="icon" title="Submit">Submit</a>
+                              
+
+				<div class="spacer8">&nbsp;</div>
+				
+				<div class="dat"><a href="http://www.pref.fukushima.jp/pc-concours/">PCK 2003</a></div>
+				
+
+				
+
+			</div>
+                        
+			<h1 class="title">List of Top 3 Hills</h1>
+                        
+			<span class="text-red3">Time Limit : 1 sec, Memory Limit : 65536 KB</span>
+
+
+   
+      <br /><span class="text"><a href="description.jsp?id=0001&lang=jp">Japanese version is here</a></span>
+   
+
+
+
+		</div>
+	</div>
+	<div id="page">
+	  <div class="wrapper">
+	    <div class="description">
+	        
+		
+  
+                <!--<script src="./IMAGE/varmath.js" charset="UTF-8"></script>-->
+
+	        <H1>List of Top 3 Hills</H1>
+
+<p>
+There is a data which provides heights (in meter) of mountains. The data is only for ten mountains.
+</p>
+
+<p>
+Write a program which prints heights of the top three mountains in descending order.
+</p>
+
+<H2>Input</H2>
+
+<pre>
+height of mountain 1 (integer)
+height of mountain 2 (integer)
+height of mountain 3 (integer)
+ .
+ .
+ .
+height of mountain 10 (integer)
+</pre>
+
+<h2>Constraints</h2>
+
+<p>
+0 &le; height of mountain &le; 10000
+</p>
+
+<H2>Output</H2>
+
+<pre>
+height of the 1st mountain
+height of the 2nd mountain
+height of the 3rd mountain
+</pre>
+
+<H2>Sample Input</H2>
+<pre>
+1819
+2003
+876
+2840
+1723
+1673
+3776
+2848
+1592
+922
+</pre>
+
+<H2>Output for the Sample Input</H2>
+
+<pre>
+3776
+2848
+2840
+</pre>
+
+
+
+
+                <hr>
+
+		  <div class="dat" style="font-size:10pt">
+                   Source: PC Koshien 2003
+
+		   , All-Japan High School Programming Contest, Aizu-Wakamatsu, Japan, 2003
+
+		   
+		   
+
+		   
+
+                   
+                   <br /> <a href="http://www.pref.fukushima.jp/pc-concours/">http://www.pref.fukushima.jp/pc-concours/</a>
+                   
+                   
+
+		</div>
+		<div class="spacer60">&nbsp;</div>
+	    </div>
+	  </div>
+	</div>
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+ 
+ $('#pwd').append('<a href="finder.jsp?volumeNo=0" class="now">Volume0</a><span class="padding6">-</span>0001</a>');
+ 
+});
+</script>
+
+
+</div>
+
+
+</body>
+</html>

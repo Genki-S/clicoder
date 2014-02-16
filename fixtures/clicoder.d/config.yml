@@ -1,0 +1,6 @@
+---
+aoj:
+    user_id: Glen_S
+    password: 'pass'
+    template: template.cpp
+    makefile: Makefile
