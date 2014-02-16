@@ -8,6 +8,10 @@ module Clicoder
   TEMP_OUTPUT_FILENAME = 'out.txt'
 
   module Helper
+    def detect_main
+      Dir.glob('main.*').first
+    end
+
     def ext_to_language_name(ext)
       @map ||= {
         cpp: 'C++',
