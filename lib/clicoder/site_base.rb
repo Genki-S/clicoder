@@ -2,21 +2,21 @@ require 'open-uri'
 require 'nokogiri'
 require 'yaml'
 require 'net/http'
+require 'abstract_method'
 
 require 'clicoder'
 require 'clicoder/config'
 
 module Clicoder
-  class AOJ
-    @@url_format = 'http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id={{problem_id}}'
+  class SiteBase
+    # Parameters
+    abstract_method :problem_url
+    abstract_method :inputs_xpath
+    abstract_method :outputs_xpath
+    abstract_method :working_directory
 
-    def initialize(problem_number)
-      @problem_id = "%04d" % problem_number
-      @submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
-      @config = Config.new
-      @aoj_config = Hash.new { '' }
-      @aoj_config.merge!(@config.global['aoj']) if @config.global.has_key?('aoj')
-    end
+    # Operations
+    abstract_method :submit
 
     def start
       prepare_directories
@@ -24,28 +24,11 @@ module Clicoder
       download_outputs
       copy_template
       copy_makefile
-
-      # Store local config
-      local_config = { site: 'aoj' }
-      File.open("#{work_dir}/.config.yml", 'w') { |f| f.write(local_config.to_yaml) }
-    end
-
-    def submit
-      post_params = {
-        userID: user_id,
-        password: @aoj_config['password'],
-        problemNO: @problem_id,
-        language: ext_to_language_name(File.extname(main_program)),
-        sourceCode: File.read(main_program),
-        submit: 'Send'
-      }
-      response = Net::HTTP.post_form(URI(@submit_url), post_params)
-      return response.body !~ /UserID or Password is Wrong/
     end
 
     def prepare_directories
-      FileUtils.mkdir_p(@problem_id)
-      Dir.chdir(work_dir) do
+      FileUtils.mkdir_p(working_directory)
+      Dir.chdir(working_directory) do
         FileUtils.mkdir_p(INPUTS_DIRNAME)
         FileUtils.mkdir_p(OUTPUTS_DIRNAME)
         FileUtils.mkdir_p(MY_OUTPUTS_DIRNAME)
@@ -53,7 +36,7 @@ module Clicoder
     end
 
     def download_inputs
-      Dir.chdir("#{work_dir}/#{INPUTS_DIRNAME}") do
+      Dir.chdir("#{working_directory}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(input)
@@ -63,7 +46,7 @@ module Clicoder
     end
 
     def download_outputs
-      Dir.chdir("#{work_dir}/#{OUTPUTS_DIRNAME}") do
+      Dir.chdir("#{working_directory}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
           File.open("#{i}.txt", 'w') do |f|
             f.write(output)
@@ -73,39 +56,27 @@ module Clicoder
     end
 
     def copy_template
-      template_file = File.expand_path(@aoj_config['template'], @config.global_config_dir)
+      template_file = File.expand_path(config.template, config.global_config_dir)
       return unless File.file?(template_file)
       ext = File.extname(template_file)
-      FileUtils.cp(template_file, "#{@problem_id}/main#{ext}")
+      FileUtils.cp(template_file, "#{working_directory}/main#{ext}")
     end
 
     def copy_makefile
-      makefile = File.expand_path(@aoj_config['makefile'], @config.global_config_dir)
+      makefile = File.expand_path(config.makefile, config.global_config_dir)
       return unless File.file?(makefile)
       ext = File.extname(makefile)
-      FileUtils.cp(makefile, "#{@problem_id}/Makefile")
+      FileUtils.cp(makefile, "#{working_directory}/Makefile")
     end
 
     def fetch_inputs
-      pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Sample Input"]]')
-      pre.map { |node| node.text.lstrip }
+      input_nodes = xml_document.xpath(inputs_xpath)
+      input_nodes.map { |node| node.text.strip }
     end
 
     def fetch_outputs
-      pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Output for the Sample Input"]]')
-      pre.map { |node| node.text.lstrip }
-    end
-
-    def get_url
-      @@url_format.gsub('{{problem_id}}', "%04d" % @problem_id)
-    end
-
-    def user_id
-      @aoj_config['user_id']
-    end
-
-    def work_dir
-      @problem_id
+      outputs_nodes = xml_document.xpath(outputs_xpath)
+      outputs_nodes.map { |node| node.text.strip }
     end
 
     def ext_to_language_name(ext)
@@ -123,14 +94,12 @@ module Clicoder
       return map[ext.gsub(/^\./, '').to_sym]
     end
 
-    def main_program
-      Dir.glob('main.*').first
+    def xml_document
+      @xml_document ||= Nokogiri::HTML(open(problem_url))
     end
 
-    private
-
-    def xml_document
-      @xml_document ||= Nokogiri::HTML(open(get_url))
+    def config
+      @config ||= Config.new
     end
   end
 end

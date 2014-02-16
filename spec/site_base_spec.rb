@@ -1,77 +1,66 @@
 require 'spec_helper'
 
-require 'clicoder'
-require 'clicoder/aoj'
+require 'clicoder/site_base'
 require 'clicoder/config'
 
-require 'open-uri'
 require 'nokogiri'
-require 'yaml'
+require 'abstract_method'
 
 module Clicoder
-  describe AOJ do
-
-    # Always return new instance to resemble CLI execution
-    def aoj
-      AOJ.new(problem_number)
-    end
-
-    let(:problem_number) { 1 }
-    let(:problem_id) { "%04d" % problem_number }
-    let(:problem_url) { "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{problem_id}" }
-    let(:xml_document) { Nokogiri::HTML(open(problem_url)) }
+  describe SiteBase do
+    let(:site_base) { SiteBase.new }
     let(:config) { Config.new }
 
-    shared_context 'when config is not present', config: :absent do
+    let(:abstract_methods) do
+      %i(
+        problem_url
+        inputs_xpath
+        outputs_xpath
+        working_directory
+
+        submit
+      )
+    end
+
+    it 'raises AbstractMethodCalled for abstract methods' do
+      abstract_methods.each do |method|
+        expect{ site_base.send(method) }.to raise_exception(AbstractMethodCalled)
+      end
+    end
+
+    describe '#config' do
+      it 'returns config object' do
+        expect(site_base.config).to be_a Config
+      end
+    end
+
+    context 'when all abstract methods are stubbed' do
       before do
-        Config.any_instance.stub(:global).and_return({})
-        Config.any_instance.stub(:local).and_return({})
-      end
-    end
-
-    shared_context 'in a problem directory', cwd: :problem do
-      around(:each) do |example|
-        aoj.start
-        Dir.chdir(aoj.work_dir) do
-          example.run
-        end
-      end
-    end
-
-    describe '.new' do
-      it 'loads configuration from config file' do
-        expect(aoj.user_id).to eql(config.global['aoj']['user_id'])
+        site_base.stub(:problem_url).and_return("#{FIXTURE_DIR}/sample_problem.html")
+        site_base.stub(:inputs_xpath).and_return('//div[@id="inputs"]/pre')
+        site_base.stub(:outputs_xpath).and_return('//div[@id="outputs"]/pre')
+        site_base.stub(:working_directory).and_return('working_directory')
       end
 
-      context 'when there is no config file', config: :absent do
-        it 'does not raise error and continue without configuration' do
-          expect(aoj.user_id).to eql('')
-        end
-      end
-    end
+      describe '#start' do
+        before { site_base.start }
 
-    describe '#start' do
-      context 'when config is present' do
-        before(:each) do
-          aoj.start
-        end
-
-        it 'creates new directory named by problem_id' do
-          expect(File.directory?(problem_id)).to be_true
+        it 'creates working directory specified by #working_directory' do
+          expect(File.directory?(site_base.working_directory)).to be_true
         end
 
         it 'prepares directories for inputs, outpus, and myoutputs' do
           dirs = [INPUTS_DIRNAME, OUTPUTS_DIRNAME, MY_OUTPUTS_DIRNAME]
-          Dir.chdir(aoj.work_dir) do
-            dirs.each do |d|
-              expect(File.directory?(d)).to be_true
+          Dir.chdir(site_base.working_directory) do
+            dirs.each do |dir|
+              expect(File.directory?(dir)).to be_true
             end
           end
         end
 
-        it 'stores sample input files into "inputs" directory named by number.txt' do
-          input_strings = aoj.fetch_inputs
-          inputs_dir = "#{problem_id}/inputs"
+        it 'stores sample input files named by number.txt' do
+          input_strings = site_base.fetch_inputs
+          inputs_dir = "#{site_base.working_directory}/inputs"
           Dir.chdir(inputs_dir) do
             input_strings.each_with_index do |input, i|
               expect(File.read("#{i}.txt")).to eql(input)
@@ -79,9 +68,9 @@ module Clicoder
           end
         end
 
-        it 'stores output for sample input files into "outputs" directory named by number.txt' do
-          output_strings = aoj.fetch_outputs
-          outputs_dir = "#{problem_id}/outputs"
+        it 'stores output for sample input files named by number.txt' do
+          output_strings = site_base.fetch_outputs
+          outputs_dir = "#{site_base.working_directory}/outputs"
           Dir.chdir(outputs_dir) do
             output_strings.each_with_index do |output, i|
               expect(File.read("#{i}.txt")).to eql(output)
@@ -89,74 +78,54 @@ module Clicoder
           end
         end
 
-        it 'copies template file specified by config file into problem directory named main.ext' do
-          template = File.expand_path(config.global['aoj']['template'], config.global_config_dir)
+        it 'copies template file specified by config into problem directory named main.ext' do
+          template = File.expand_path(config.template, config.global_config_dir)
           ext = File.extname(template)
-          Dir.chdir(aoj.work_dir) do
+          Dir.chdir(site_base.working_directory) do
             expect(File.read("main#{ext}")).to eql(File.read(template))
           end
         end
 
-        it 'copies Makefile specified by config file into problem directory' do
-          makefile = File.expand_path(config.global['aoj']['makefile'], config.global_config_dir)
-          Dir.chdir(aoj.work_dir) do
+        it 'copies Makefile specified by config into problem directory' do
+          makefile = File.expand_path(config.makefile, config.global_config_dir)
+          Dir.chdir(site_base.working_directory) do
             expect(File.read('Makefile')).to eql(File.read(makefile))
+          end
+        end
+
+        context 'when config is not present', config: :absent do
+          it 'does not raise error' do
+            expect{ site_base.start }.to_not raise_error
           end
         end
       end
 
-      context 'when config is not present', config: :absent do
-        it 'does not raise error' do
-          expect{ aoj.start }.to_not raise_error
+      describe '#ext_to_language_name' do
+        it 'returns "C++" for ".cpp" extension' do
+          expect(site_base.ext_to_language_name('cpp')).to eql('C++')
+          expect(site_base.ext_to_language_name('.cpp')).to eql('C++')
+        end
+
+        it 'returns "Ruby" for ".rb" extension' do
+          expect(site_base.ext_to_language_name('rb')).to eql('Ruby')
+          expect(site_base.ext_to_language_name('.rb')).to eql('Ruby')
         end
       end
-    end
 
-    describe '#submit', cwd: :problem do
-      context 'when user ID and password is present' do
-        it 'returns true' do
-          expect(aoj.submit).to be_true
+      describe '#fetch_inputs' do
+        it 'downloads sample inputs from problem page' do
+          input_nodes = Nokogiri::HTML(open(site_base.problem_url)).xpath(site_base.inputs_xpath)
+          inputs = input_nodes.map{ |node| node.text.strip }
+          expect(site_base.fetch_inputs).to eql(inputs)
         end
       end
 
-      context 'when user ID and password is not present', config: :absent do
-        it 'returns false' do
-          expect(aoj.submit).to be_false
+      describe '#fetch_outputs' do
+        it 'downloads outputs for sample inputs from problem page' do
+          output_nodes = Nokogiri::HTML(open(site_base.problem_url)).xpath(site_base.outputs_xpath)
+          outputs = output_nodes.map{ |node| node.text.strip }
+          expect(site_base.fetch_outputs).to eql(outputs)
         end
-      end
-    end
-
-    describe '#ext_to_language_name' do
-      it 'returns "C++" for ".cpp" extension' do
-        expect(aoj.ext_to_language_name('cpp')).to eql('C++')
-        expect(aoj.ext_to_language_name('.cpp')).to eql('C++')
-      end
-
-      it 'returns "Ruby" for ".rb" extension' do
-        expect(aoj.ext_to_language_name('rb')).to eql('Ruby')
-        expect(aoj.ext_to_language_name('.rb')).to eql('Ruby')
-      end
-    end
-
-    describe '#fetch_inputs' do
-      it 'downloads sample inputs from problem page' do
-        pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Sample Input"]]')
-        inputs = pre.map { |node| node.text.lstrip }
-        expect(aoj.fetch_inputs).to eql(inputs)
-      end
-    end
-
-    describe '#fetch_outputs' do
-      it 'downloads outputs for sample inputs from problem page' do
-        pre = xml_document.xpath('//pre[preceding-sibling::h2[1][text()="Output for the Sample Input"]]')
-        outputs = pre.map { |node| node.text.lstrip }
-        expect(aoj.fetch_outputs).to eql(outputs)
-      end
-    end
-
-    describe '#get_url' do
-      it 'returns url with problem number' do
-        expect(aoj.get_url).to eql(problem_url)
       end
     end
   end
