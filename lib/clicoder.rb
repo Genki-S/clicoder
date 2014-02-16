@@ -6,4 +6,21 @@ module Clicoder
   MY_OUTPUTS_DIRNAME = 'my_outputs'
   TEMP_INPUT_FILENAME = 'in.txt'
   TEMP_OUTPUT_FILENAME = 'out.txt'
+
+  module Helper
+    def ext_to_language_name(ext)
+      @map ||= {
+        cpp: 'C++',
+        cc: 'C++',
+        c: 'C',
+        java: 'JAVA',
+        cs: 'C#',
+        d: 'D',
+        rb: 'Ruby',
+        py: 'Python',
+        php: 'PHP'
+      }
+      return @map[ext.gsub(/^\./, '').to_sym]
+    end
+  end
 end

@@ -9,6 +9,8 @@ require 'clicoder/config'
 
 module Clicoder
   class SiteBase
+    include Helper
+
     # Parameters
     abstract_method :problem_url
     abstract_method :inputs_xpath
@@ -77,21 +79,6 @@ module Clicoder
     def fetch_outputs
       outputs_nodes = xml_document.xpath(outputs_xpath)
       outputs_nodes.map { |node| node.text.strip }
-    end
-
-    def ext_to_language_name(ext)
-      map = {
-        cpp: 'C++',
-        cc: 'C++',
-        c: 'C',
-        java: 'JAVA',
-        cs: 'C#',
-        d: 'D',
-        rb: 'Ruby',
-        py: 'Python',
-        php: 'PHP'
-      }
-      return map[ext.gsub(/^\./, '').to_sym]
     end
 
     def xml_document
