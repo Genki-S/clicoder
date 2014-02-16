@@ -16,5 +16,13 @@ module Clicoder
       @global_config_dir ||= "#{ENV['HOME']}/.clicoder.d"
     end
 
+    def template
+      @global['default']['template']
+    end
+
+    def makefile
+      @global['default']['makefile']
+    end
+
   end
 end
