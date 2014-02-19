@@ -5,5 +5,5 @@ default:
 sample_site:
     user_id: sample_user_id
     password: sample_password
-    template: template.cpp
-    makefile: Makefile
+    template: sample_template.cpp
+    makefile: sample_Makefile

@@ -47,7 +47,7 @@ module Clicoder
       end
 
       it 'copies template file specified by config into problem directory named main.ext' do
-        template = File.expand_path(config.template, config.global_config_dir)
+        template = File.expand_path(config.asset('template'), config.global_config_dir)
         ext = File.extname(template)
         Dir.chdir(sample_site.working_directory) do
           expect(File.read("main#{ext}")).to eql(File.read(template))
@@ -55,7 +55,7 @@ module Clicoder
       end
 
       it 'copies Makefile specified by config into problem directory' do
-        makefile = File.expand_path(config.makefile, config.global_config_dir)
+        makefile = File.expand_path(config.asset('makefile'), config.global_config_dir)
         Dir.chdir(sample_site.working_directory) do
           expect(File.read('Makefile')).to eql(File.read(makefile))
         end

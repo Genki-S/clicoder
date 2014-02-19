@@ -9,16 +9,16 @@ module Clicoder
     let(:global_config) { YAML::load_file(global_config_file) }
     let(:global_config_dir) { "#{ENV['HOME']}/.clicoder.d" }
     let(:global_config_file) { "#{global_config_dir}/config.yml" }
-    let(:local_config) { { 'site' => 'default' } }
+    let(:local_config) { { 'site' => 'sample_site' } }
     let(:local_config_file) { '.config.yml' }
 
-    describe '.new' do
-      before do
-        File.open(local_config_file, 'w') do |f|
-          f.write(local_config.to_yaml)
-        end
+    before do
+      File.open(local_config_file, 'w') do |f|
+        f.write(local_config.to_yaml)
       end
+    end
 
+    describe '.new' do
       it 'loads global configuration from global_config_file' do
         expect(config.global).to eql(global_config)
       end
@@ -28,15 +28,34 @@ module Clicoder
       end
     end
 
-    describe '#template' do
-      it 'returns template file' do
-        expect(config.template).to eql(YAML::load_file(global_config_file)['default']['template'])
+    describe '#asset' do
+      context 'when the site specific asset is specified in the config file' do
+        it 'returns site specific template' do
+          site = local_config['site']
+          file_name = global_config[site]['template']
+          expect(config.asset('template')).to eql(File.expand_path(file_name, global_config_dir))
+        end
       end
-    end
 
-    describe '#makefile' do
-      it 'returns makefile file' do
-        expect(config.makefile).to eql(YAML::load_file(global_config_file)['default']['makefile'])
+      context 'when the site specific asset is not specified in the config file' do
+        before do
+          config.global[local_config['site']] = {}
+        end
+
+        it 'returns default template' do
+          file_name = global_config['default']['template']
+          expect(config.asset('template')).to eql(File.expand_path(file_name, global_config_dir))
+        end
+      end
+
+      context 'when nothing is specified in the config file' do
+        before do
+          config.global = {}
+        end
+
+        it 'returns empty string' do
+          expect(config.asset('template')).to eql('')
+        end
       end
     end
 

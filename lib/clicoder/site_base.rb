@@ -60,14 +60,14 @@ module Clicoder
     end
 
     def copy_template
-      template_file = File.expand_path(config.template, config.global_config_dir)
+      template_file = config.asset('template')
       return unless File.file?(template_file)
       ext = File.extname(template_file)
       FileUtils.cp(template_file, "#{working_directory}/main#{ext}")
     end
 
     def copy_makefile
-      makefile = File.expand_path(config.makefile, config.global_config_dir)
+      makefile = config.asset('makefile')
       return unless File.file?(makefile)
       ext = File.extname(makefile)
       FileUtils.cp(makefile, "#{working_directory}/Makefile")
