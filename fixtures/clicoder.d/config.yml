@@ -2,8 +2,8 @@
 default:
     template: template.cpp
     makefile: Makefile
-aoj:
-    user_id: Glen_S
-    password: 'pass'
+sample_site:
+    user_id: sample_user_id
+    password: sample_password
     template: template.cpp
     makefile: Makefile

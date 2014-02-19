@@ -1,16 +1,29 @@
 require 'thor'
 require 'thor/group'
 
-require 'clicoder/aoj'
 require 'clicoder/judge'
+require 'clicoder/sites/sample_site'
+require 'clicoder/sites/aoj'
 
 module Clicoder
   class Starter < Thor
+    desc "sample_site", "Prepare directory to deal with new problem from SampleSite"
+    def sample_site
+      sample_site = SampleSite.new
+      start_with(sample_site)
+    end
+
     desc "aoj PROBLEM_NUMBER", "Prepare directory to deal with new problem from AOJ"
     def aoj(problem_number)
       aoj = AOJ.new(problem_number)
-      aoj.start
-      puts "created directory #{aoj.work_dir}"
+      start_with(aoj)
+    end
+
+    no_commands do
+      def start_with(site)
+        site.start
+        puts "created directory #{site.working_directory}"
+      end
     end
   end
 
@@ -55,8 +68,8 @@ module Clicoder
     desc "submit", "Submit your program"
     def submit
       load_local_config
-      aoj = AOJ.new(1)
-      if aoj.submit
+      site = get_site
+      if site.submit
         puts "Submission Succeeded."
       else
         puts "Submission Failed."
@@ -71,6 +84,15 @@ module Clicoder
           exit 1
         end
         @local_config = YAML::load_file('.config.yml')
+      end
+
+      def get_site
+        case @local_config['site']
+        when 'sample_site'
+          SampleSite.new
+        when 'aoj'
+          AOJ.new
+        end
       end
     end
     register Starter, 'new', 'new <command>', 'start a new problem'

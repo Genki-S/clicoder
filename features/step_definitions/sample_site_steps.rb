@@ -1,49 +1,25 @@
 require 'clicoder'
-require 'clicoder/aoj'
+require 'clicoder/sites/sample_site'
 
-Given /^AOJ is stubbed with webmock/ do
-  # TODO: DRY. see spec/spec_helper.rb
-  stub_request(:get, 'http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0001')
-    .with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'})
-    .to_return(:status => 200, :body => File.read("#{FIXTURE_DIR}/webmock/aoj/get_description_0001_body.html"), :headers => {})
-
-  stub_request(:post, "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit")
-    .with(
-      :body => {
-        "userID"=>"",
-        "password"=>"",
-        "language"=>"C++",
-        "problemNO"=>"0001",
-        "sourceCode"=>File.read("#{FIXTURE_DIR}/clicoder.d/template.cpp"),
-        "submit"=>"Send",
-      },
-      :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
-    )
-    .to_return(:status => 200, :body => 'UserID or Password is Wrong.', :headers => {})
-
-  stub_request(:post, "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit")
-    .with(
-      :body => {
-        "userID"=>"Glen_S",
-        "password"=>"pass",
-        "language"=>"C++",
-        "problemNO"=>"0001",
-        "sourceCode"=>File.read("#{FIXTURE_DIR}/clicoder.d/template.cpp"),
-        "submit"=>"Send",
-      },
-      :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'judge.u-aizu.ac.jp', 'User-Agent'=>'Ruby'}
-    )
-    .to_return(:status => 200, :body => '', :headers => {})
-end
-
-Given /^in a problem directory of number (\d+)/ do |problem_number|
-  aoj = Clicoder::AOJ.new(problem_number)
-  aoj.start
-  Dir.chdir(aoj.work_dir)
+Given /^SampleSite submission url is stubbed with webmock/ do
+  stub_request(:post, "http://samplesite.com/submit").
+    with(:body => {"password"=>"sample_password", "user_id"=>"sample_user_id"},
+         :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'samplesite.com', 'User-Agent'=>'Ruby'}).
+    to_return(:status => 200, :body => "Success", :headers => {})
+  stub_request(:post, "http://samplesite.com/submit").
+    with(:body => {"password"=>"", "user_id"=>""},
+         :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'samplesite.com', 'User-Agent'=>'Ruby'}).
+    to_return(:status => 200, :body => "Failure", :headers => {})
 end
 
 Given /^I don't have user_id and password/ do
   FileUtils.rm("#{ENV['HOME']}/.clicoder.d/config.yml")
+end
+
+Given /^in a problem directory/ do
+  sample_site = Clicoder::SampleSite.new
+  sample_site.start
+  Dir.chdir(sample_site.working_directory)
 end
 
 Given /^outputs are wrong/ do
