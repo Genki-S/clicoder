@@ -6,15 +6,13 @@ module Clicoder
 
     def initialize(problem_number)
       @problem_id = "%04d" % problem_number
-      @aoj_config = Hash.new { '' }
-      @aoj_config.merge!(config.global['aoj']) if config.global.has_key?('aoj')
     end
 
     def submit
       submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
       post_params = {
-        userID: @aoj_config['user_id'],
-        password: @aoj_config['password'],
+        userID: config.get(['aoj', 'user_id']),
+        password: config.get(['aoj', 'password']),
         problemNO: @problem_id,
         language: ext_to_language_name(File.extname(detect_main)),
         sourceCode: File.read(detect_main),

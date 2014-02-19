@@ -24,5 +24,21 @@ module Clicoder
       @global['default']['makefile']
     end
 
+    def merged_config
+      global.merge(local)
+    end
+
+    def get(keys = [])
+      conf = merged_config
+      begin
+        keys.each do |key|
+          conf = conf[key]
+        end
+        return conf
+      rescue
+        return ''
+      end
+    end
+
   end
 end
