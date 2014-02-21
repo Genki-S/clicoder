@@ -20,6 +20,7 @@ module Clicoder
         working_directory
 
         submit
+        open_submission
       )
     end
 

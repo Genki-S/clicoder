@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "nokogiri"
   spec.add_dependency "thor"
   spec.add_dependency "abstract_method"
+  spec.add_dependency "launchy"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"

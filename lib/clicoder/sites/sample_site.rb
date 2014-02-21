@@ -2,6 +2,7 @@ require 'clicoder/site_base'
 require 'clicoder/config'
 
 require 'net/http'
+require 'launchy'
 
 module Clicoder
   class SampleSite < SiteBase
@@ -14,6 +15,10 @@ module Clicoder
       }
       response = Net::HTTP.post_form(URI(submit_url), post_params)
       return response.body =~ /Success/
+    end
+
+    def open_submission
+      Launchy.open('http://samplesite.com/submissions')
     end
 
     def site_name

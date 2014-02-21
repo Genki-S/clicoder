@@ -22,6 +22,10 @@ module Clicoder
       return response.body !~ /UserID or Password is Wrong/
     end
 
+    def open_submission
+      Launchy.open('http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit')
+    end
+
     def site_name
       'aoj'
     end

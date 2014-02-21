@@ -20,6 +20,7 @@ module Clicoder
 
     # Operations
     abstract_method :submit
+    abstract_method :open_submission
 
     def start
       prepare_directories

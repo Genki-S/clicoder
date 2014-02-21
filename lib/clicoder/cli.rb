@@ -71,6 +71,7 @@ module Clicoder
       site = get_site
       if site.submit
         puts "Submission Succeeded."
+        site.open_submission
       else
         puts "Submission Failed."
         exit 1

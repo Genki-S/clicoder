@@ -1,5 +1,6 @@
 require 'clicoder'
 require 'clicoder/sites/sample_site'
+require 'launchy'
 
 Given /^SampleSite submission url is stubbed with webmock/ do
   stub_request(:post, "http://samplesite.com/submit").
@@ -47,6 +48,14 @@ Given /^the answer differs in second decimal place/ do
   end
 end
 
+Given /^Launchy.open is stubbed/ do
+  @launchy_open_count = 0
+  Launchy.stub(:open) do |url|
+    @launchy_open_count += 1
+    puts "opening #{url}"
+  end
+end
+
 Then /^an executable should be generated/ do
   expect(File.exists?('a.out')).to be_true
 end
@@ -58,3 +67,6 @@ Then /^my answer should be output in my outputs directory/ do
   end
 end
 
+Then /^the submission status should be opened/ do
+  @launchy_open_count.should eq(1)
+end

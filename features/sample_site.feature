@@ -54,9 +54,11 @@ Feature: SampleSite
 
 	Scenario: Submit with user_id and password
 		Given SampleSite submission url is stubbed with webmock
-		Given in a problem directory
+		And in a problem directory
+		And Launchy.open is stubbed
 		When I run `clicoder submit`
 		Then the output should contain "Submission Succeeded."
+		And the submission status should be opened
 
 	Scenario: Submit without user_id and password
 		Given SampleSite submission url is stubbed with webmock
