@@ -23,6 +23,10 @@ Given /^in a problem directory/ do
   Dir.chdir(sample_site.working_directory)
 end
 
+Given /^there is no output/ do
+  FileUtils.rm(Dir.glob("#{Clicoder::MY_OUTPUTS_DIRNAME}/*.txt"))
+end
+
 Given /^outputs are wrong/ do
   # it's wrong already
 end

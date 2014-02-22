@@ -53,16 +53,20 @@ module Clicoder
       load_local_config
       accepted = true
       judge = Judge.new(options)
-      Dir.glob("#{MY_OUTPUTS_DIRNAME}/*.txt").each do |my_output|
-        puts "judging #{my_output}"
-        accepted = false unless judge.judge(my_output, "#{OUTPUTS_DIRNAME}/#{File.basename(my_output)}")
+      Dir.glob("#{OUTPUTS_DIRNAME}/*.txt").each do |output|
+        puts "judging #{output}"
+        my_output =  "#{MY_OUTPUTS_DIRNAME}/#{File.basename(output)}"
+        if File.exists?(my_output)
+          accepted = false unless judge.judge(output, my_output)
+        else
+          accepted = false
+        end
       end
       if accepted
         puts "Correct Answer"
       else
         puts "Wrong Answer"
       end
-      exit accepted ? 0 : 1
     end
 
     desc "submit", "Submit your program"

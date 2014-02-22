@@ -18,6 +18,11 @@ Feature: SampleSite
 		And I run `clicoder execute`
 		Then my answer should be output in my outputs directory
 
+	Scenario: Judge without outputs
+		Given in a problem directory
+		When I run `clicoder judge`
+		Then the output should contain "Wrong Answer"
+
 	Scenario: Judge wrong outputs
 		Given in a problem directory
 		When I run `clicoder build`
