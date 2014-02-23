@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'yaml'
 require 'net/http'
 require 'abstract_method'
+require 'reverse_markdown'
 
 require 'clicoder'
 require 'clicoder/config'
@@ -14,6 +15,7 @@ module Clicoder
     # Parameters
     abstract_method :site_name
     abstract_method :problem_url
+    abstract_method :description_xpath
     abstract_method :inputs_xpath
     abstract_method :outputs_xpath
     abstract_method :working_directory
@@ -24,6 +26,7 @@ module Clicoder
 
     def start
       prepare_directories
+      download_description
       download_inputs
       download_outputs
       copy_template
@@ -37,6 +40,14 @@ module Clicoder
         FileUtils.mkdir_p(INPUTS_DIRNAME)
         FileUtils.mkdir_p(OUTPUTS_DIRNAME)
         FileUtils.mkdir_p(MY_OUTPUTS_DIRNAME)
+      end
+    end
+
+    def download_description
+      Dir.chdir(working_directory) do
+        File.open('description.md', 'w') do |f|
+          f.write(ReverseMarkdown.parse(fetch_description))
+        end
       end
     end
 
@@ -72,6 +83,10 @@ module Clicoder
       return unless File.file?(makefile)
       ext = File.extname(makefile)
       FileUtils.cp(makefile, "#{working_directory}/Makefile")
+    end
+
+    def fetch_description
+      xml_document.at_xpath(description_xpath)
     end
 
     def fetch_inputs

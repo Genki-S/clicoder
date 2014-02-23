@@ -29,6 +29,10 @@ module Clicoder
       "#{GEM_ROOT}/fixtures/sample_problem.html"
     end
 
+    def description_xpath
+      '//div[@id="description"]'
+    end
+
     def inputs_xpath
       '//div[@id="inputs"]/pre'
     end

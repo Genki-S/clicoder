@@ -3,6 +3,8 @@ require 'spec_helper'
 require 'clicoder/config'
 require 'clicoder/sites/sample_site'
 
+require 'reverse_markdown'
+
 module Clicoder
   describe SampleSite do
     let(:sample_site) { SampleSite.new }
@@ -23,6 +25,13 @@ module Clicoder
           dirs.each do |dir|
             expect(File.directory?(dir)).to be_true
           end
+        end
+      end
+
+      it 'stores description as markdown' do
+        description = sample_site.fetch_description
+        Dir.chdir(sample_site.working_directory) do
+          expect(File.read('description.md')).to eql(ReverseMarkdown.parse(description))
         end
       end
 

@@ -15,6 +15,7 @@ module Clicoder
       %i(
         site_name
         problem_url
+        description_xpath
         inputs_xpath
         outputs_xpath
         working_directory
