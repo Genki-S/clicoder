@@ -82,6 +82,18 @@ module Clicoder
       end
     end
 
+    desc "add_test", "Add new test case"
+    def add_test
+      load_local_config
+      test_count = Dir.glob("#{INPUTS_DIRNAME}/*.txt").count
+      input_file = "#{INPUTS_DIRNAME}/#{test_count}.txt"
+      output_file = "#{OUTPUTS_DIRNAME}/#{test_count}.txt"
+      puts 'Input:'
+      system("cat > #{input_file}")
+      puts 'Output:'
+      system("cat > #{output_file}")
+    end
+
     no_commands do
       def load_local_config
         unless File.exists?('.config.yml')
