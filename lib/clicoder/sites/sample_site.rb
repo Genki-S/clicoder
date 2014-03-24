@@ -10,8 +10,8 @@ module Clicoder
     def submit
       submit_url = 'http://samplesite.com/submit'
       post_params = {
-        user_id: config.get(['sample_site', 'user_id']),
-        password: config.get(['sample_site', 'password']),
+        user_id: config.get('sample_site', 'user_id'),
+        password: config.get('sample_site', 'password'),
       }
       response = Net::HTTP.post_form(URI(submit_url), post_params)
       return response.body =~ /Success/

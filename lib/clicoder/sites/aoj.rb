@@ -11,8 +11,8 @@ module Clicoder
     def submit
       submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
       post_params = {
-        userID: config.get(['aoj', 'user_id']),
-        password: config.get(['aoj', 'password']),
+        userID: config.get('aoj', 'user_id'),
+        password: config.get('aoj', 'password'),
         problemNO: @problem_id,
         language: ext_to_language_name(File.extname(detect_main)),
         sourceCode: File.read(detect_main),

@@ -17,10 +17,10 @@ module Clicoder
     end
 
     def asset(asset_name)
-      site_name = get(['site'])
-      file_name = get([site_name, asset_name])
+      site_name = get('site')
+      file_name = get(site_name, asset_name)
       if file_name.empty?
-        file_name = get(['default', asset_name])
+        file_name = get('default', asset_name)
       end
 
       unless file_name.empty?
@@ -34,7 +34,7 @@ module Clicoder
       @merged_config ||= global.merge(local)
     end
 
-    def get(keys = [])
+    def get(*keys)
       conf = merged_config
       begin
         keys.each do |key|

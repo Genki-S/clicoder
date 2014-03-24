@@ -69,13 +69,13 @@ module Clicoder
       context 'with arguments' do
         context 'when config is missing' do
           it 'returns empty string' do
-            expect(config.get(['it', 'is', 'missing'])).to eql('')
+            expect(config.get('it', 'is', 'missing')).to eql('')
           end
         end
 
         context 'when config is present' do
           it 'returns the config value' do
-            expect(config.get(['sample_site', 'user_id'])).to eql(global_config['sample_site']['user_id'])
+            expect(config.get('sample_site', 'user_id')).to eql(global_config['sample_site']['user_id'])
           end
         end
       end
