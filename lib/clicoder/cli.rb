@@ -28,6 +28,13 @@ module Clicoder
   end
 
   class CLI < Thor
+    desc "all", "build, execute, and judge"
+    def all
+      invoke :build
+      invoke :execute
+      invoke :judge
+    end
+
     desc "build", "Build your program using `make build`"
     def build
       load_local_config
