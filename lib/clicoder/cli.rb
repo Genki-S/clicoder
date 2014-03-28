@@ -38,8 +38,7 @@ module Clicoder
     desc "build", "Build your program using `make build`"
     def build
       load_local_config
-      status = system('make build')
-      exit status
+      system('make build')
     end
 
     desc "execute", "Execute your program using `make run`"
