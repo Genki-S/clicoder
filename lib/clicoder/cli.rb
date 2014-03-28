@@ -57,8 +57,13 @@ module Clicoder
         puts "judging #{output}"
         my_output =  "#{MY_OUTPUTS_DIRNAME}/#{File.basename(output)}"
         if File.exists?(my_output)
-          accepted = false unless judge.judge(output, my_output)
+          unless judge.judge(output, my_output)
+            puts '! Wrong Answer'
+            system("diff -y #{output} #{my_output}")
+            accepted = false
+          end
         else
+          puts "! #{my_output} does not exist"
           accepted = false
         end
       end
