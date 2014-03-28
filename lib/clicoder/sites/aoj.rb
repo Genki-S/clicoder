@@ -5,6 +5,7 @@ module Clicoder
   class AOJ < SiteBase
 
     def initialize(problem_number)
+      config.local['problem_number'] = problem_number
       @problem_id = "%04d" % problem_number
     end
 
@@ -23,7 +24,7 @@ module Clicoder
     end
 
     def open_submission
-      Launchy.open('http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit')
+      Launchy.open('http://judge.u-aizu.ac.jp/onlinejudge/status.jsp')
     end
 
     def site_name
@@ -49,6 +50,5 @@ module Clicoder
     def working_directory
       @problem_id
     end
-
   end
 end

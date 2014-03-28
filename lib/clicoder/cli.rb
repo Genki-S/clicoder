@@ -113,7 +113,7 @@ module Clicoder
         when 'sample_site'
           SampleSite.new
         when 'aoj'
-          AOJ.new
+          AOJ.new(@local_config['problem_number'])
         end
       end
     end
