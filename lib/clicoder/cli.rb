@@ -106,6 +106,18 @@ module Clicoder
       system("cat > #{output_file}")
     end
 
+    desc "download", "Download description, inputs and outputs"
+    def download
+      load_local_config
+      site = get_site
+      # TODO: this is not beautiful
+      Dir.chdir('..') do
+        site.download_description
+        site.download_inputs
+        site.download_outputs
+      end
+    end
+
     no_commands do
       def load_local_config
         unless File.exists?('.config.yml')
