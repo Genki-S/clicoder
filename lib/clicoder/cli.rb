@@ -4,6 +4,7 @@ require 'thor/group'
 require 'clicoder/judge'
 require 'clicoder/sites/sample_site'
 require 'clicoder/sites/aoj'
+require 'clicoder/sites/atcoder'
 
 module Clicoder
   class Starter < Thor
@@ -17,6 +18,12 @@ module Clicoder
     def aoj(problem_number)
       aoj = AOJ.new(problem_number)
       start_with(aoj)
+    end
+
+    desc "atcoder CONTEST_ID PROBLEM_NUMBER", "Prepare directory to deal with new problem from AtCoder"
+    def atcoder(contest_id, problem_number)
+      atcoder = AtCoder.new(contest_id, problem_number)
+      start_with(atcoder)
     end
 
     no_commands do
@@ -133,6 +140,8 @@ module Clicoder
           SampleSite.new
         when 'aoj'
           AOJ.new(@local_config['problem_number'])
+        when 'atcoder'
+          AtCoder.new(@local_config['contest_id'], @local_config['problem_number'])
         end
       end
     end
