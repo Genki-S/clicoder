@@ -14,20 +14,28 @@ module Clicoder
     end
 
     def submit
+      login do |mechanize, contest_page|
+        problem_page = mechanize.get(problem_url)
+        submit_page = problem_page.link_with(href: /submit/).click
+        submit_page.form_with(action: /submit/) do |f|
+          f.field_with(name: 'source_code').value = File.read(detect_main)
+        end.click_button
+      end
     end
 
     def open_submission
+      Launchy.open("http://#{@contest_id}.contest.atcoder.jp/submissions/me")
     end
 
     def login
-      mechanize = Mechanize.new
-      mechanize.get("http://#{@contest_id}.contest.atcoder.jp/login") do |login_page|
+      Mechanize.start do |m|
+        login_page = m.get("http://#{@contest_id}.contest.atcoder.jp/login")
         contest_home_page = login_page.form_with(action: '/login') do |f|
           f.field_with(name: 'name').value = config.get('atcoder', 'user_id')
           f.field_with(name: 'password').value = config.get('atcoder', 'password')
         end.click_button
 
-        yield
+        yield m, contest_home_page
       end
     end
 
