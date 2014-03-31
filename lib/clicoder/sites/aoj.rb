@@ -27,6 +27,11 @@ module Clicoder
       Launchy.open('http://judge.u-aizu.ac.jp/onlinejudge/status.jsp')
     end
 
+    def login
+      # no need to login for now
+      yield
+    end
+
     def site_name
       'aoj'
     end

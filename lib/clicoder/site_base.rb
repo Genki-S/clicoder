@@ -21,14 +21,17 @@ module Clicoder
     abstract_method :working_directory
 
     # Operations
+    abstract_method :login
     abstract_method :submit
     abstract_method :open_submission
 
     def start
       prepare_directories
-      download_description
-      download_inputs
-      download_outputs
+      login do
+        download_description
+        download_inputs
+        download_outputs
+      end
       copy_template
       copy_makefile
       store_local_config

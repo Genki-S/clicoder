@@ -1,6 +1,8 @@
 require 'clicoder/site_base'
 require 'clicoder/config'
 
+require 'mechanize'
+
 module Clicoder
   class AtCoder < SiteBase
 
@@ -15,6 +17,18 @@ module Clicoder
     end
 
     def open_submission
+    end
+
+    def login
+      mechanize = Mechanize.new
+      mechanize.get("http://#{@contest_id}.contest.atcoder.jp/login") do |login_page|
+        contest_home_page = login_page.form_with(action: '/login') do |f|
+          f.field_with(name: 'name').value = config.get('atcoder', 'user_id')
+          f.field_with(name: 'password').value = config.get('atcoder', 'password')
+        end.click_button
+
+        yield
+      end
     end
 
     def site_name
