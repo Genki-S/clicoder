@@ -58,7 +58,7 @@ module Clicoder
       Dir.chdir("#{working_directory}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
           File.open("#{i}.txt", 'w') do |f|
-            f.write(input)
+            f.write(input.strip + "\n")
           end
         end
       end
@@ -68,7 +68,7 @@ module Clicoder
       Dir.chdir("#{working_directory}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
           File.open("#{i}.txt", 'w') do |f|
-            f.write(output)
+            f.write(output.strip + "\n")
           end
         end
       end
@@ -94,12 +94,12 @@ module Clicoder
 
     def fetch_inputs
       input_nodes = xml_document.xpath(inputs_xpath)
-      input_nodes.map { |node| node.text.strip }
+      input_nodes.map(&:text)
     end
 
     def fetch_outputs
       outputs_nodes = xml_document.xpath(outputs_xpath)
-      outputs_nodes.map { |node| node.text.strip }
+      outputs_nodes.map(&:text)
     end
 
     def store_local_config

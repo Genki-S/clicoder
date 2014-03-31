@@ -35,22 +35,22 @@ module Clicoder
         end
       end
 
-      it 'stores sample input files named by number.txt' do
+      it 'stores sample input files named by number.txt with a newline at the end' do
         input_strings = sample_site.fetch_inputs
         inputs_dir = "#{sample_site.working_directory}/inputs"
         Dir.chdir(inputs_dir) do
           input_strings.each_with_index do |input, i|
-            expect(File.read("#{i}.txt")).to eql(input)
+            expect(File.read("#{i}.txt")).to eql(input.strip + "\n")
           end
         end
       end
 
-      it 'stores output for sample input files named by number.txt' do
+      it 'stores output for sample input files named by number.txt with a newline at the end' do
         output_strings = sample_site.fetch_outputs
         outputs_dir = "#{sample_site.working_directory}/outputs"
         Dir.chdir(outputs_dir) do
           output_strings.each_with_index do |output, i|
-            expect(File.read("#{i}.txt")).to eql(output)
+            expect(File.read("#{i}.txt")).to eql(output.strip + "\n")
           end
         end
       end
@@ -95,7 +95,7 @@ module Clicoder
     describe '#fetch_inputs' do
       it 'downloads sample inputs from problem page' do
         input_nodes = Nokogiri::HTML(open(sample_site.problem_url)).xpath(sample_site.inputs_xpath)
-        inputs = input_nodes.map{ |node| node.text.strip }
+        inputs = input_nodes.map(&:text)
         expect(sample_site.fetch_inputs).to eql(inputs)
       end
     end
