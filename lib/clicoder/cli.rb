@@ -1,5 +1,6 @@
 require 'thor'
 require 'thor/group'
+require 'launchy'
 
 require 'clicoder/judge'
 require 'clicoder/sites/sample_site'
@@ -123,6 +124,13 @@ module Clicoder
         site.download_inputs
         site.download_outputs
       end
+    end
+
+    desc "browse", "Open problem page with the browser"
+    def browse
+      load_local_config
+      site = get_site
+      Launchy.open(site.problem_url)
     end
 
     no_commands do

@@ -71,3 +71,9 @@ Feature: SampleSite
 		Given I don't have user_id and password
 		When I run `clicoder submit`
 		Then the output should contain "Submission Failed."
+
+	Scenario: Open problem page with browser
+		Given in a problem directory
+		And Launchy.open is stubbed
+		When I run `clicoder browse`
+		Then the problem page should be opened

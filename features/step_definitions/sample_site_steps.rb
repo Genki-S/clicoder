@@ -74,3 +74,7 @@ end
 Then /^the submission status should be opened/ do
   @launchy_open_count.should eq(1)
 end
+
+Then /^the problem page should be opened/ do
+  @launchy_open_count.should eq(1)
+end
