@@ -20,6 +20,7 @@ module Clicoder
         outputs_xpath
         working_directory
 
+        login
         submit
         open_submission
       )

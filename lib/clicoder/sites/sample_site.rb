@@ -21,6 +21,10 @@ module Clicoder
       Launchy.open('http://samplesite.com/submissions')
     end
 
+    def login
+      yield
+    end
+
     def site_name
       'sample_site'
     end
@@ -44,6 +48,5 @@ module Clicoder
     def working_directory
       'working_directory'
     end
-
   end
 end

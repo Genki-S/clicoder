@@ -107,5 +107,11 @@ module Clicoder
         expect(sample_site.fetch_outputs).to eql(outputs)
       end
     end
+
+    describe '#login' do
+      it 'yields control with no args' do
+        expect { |b| sample_site.login(&b) }.to yield_with_no_args
+      end
+    end
   end
 end
