@@ -50,7 +50,7 @@ module Clicoder
       system('make build')
     end
 
-    desc "execute", "Execute your program using `make run`"
+    desc "execute", "Execute your program using `make execute`"
     def execute
       load_local_config
       Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
