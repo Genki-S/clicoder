@@ -25,6 +25,17 @@ module Clicoder
     abstract_method :submit
     abstract_method :open_submission
 
+    def self.new_with_config(config)
+      case config['site']
+      when 'sample_site'
+        SampleSite.new
+      when 'aoj'
+        AOJ.new(config['problem_number'])
+      when 'atcoder'
+        AtCoder.new(config['contest_id'], config['problem_number'])
+      end
+    end
+
     def start
       prepare_directories
       login do

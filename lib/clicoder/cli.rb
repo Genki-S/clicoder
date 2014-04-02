@@ -3,6 +3,7 @@ require 'thor/group'
 require 'launchy'
 
 require 'clicoder/judge'
+require 'clicoder/site_base'
 require 'clicoder/sites/sample_site'
 require 'clicoder/sites/aoj'
 require 'clicoder/sites/atcoder'
@@ -143,14 +144,7 @@ module Clicoder
       end
 
       def get_site
-        case @local_config['site']
-        when 'sample_site'
-          SampleSite.new
-        when 'aoj'
-          AOJ.new(@local_config['problem_number'])
-        when 'atcoder'
-          AtCoder.new(@local_config['contest_id'], @local_config['problem_number'])
-        end
+        SiteBase.new_with_config(@local_config)
       end
     end
     register Starter, 'new', 'new <command>', 'start a new problem'
