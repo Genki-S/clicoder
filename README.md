@@ -105,6 +105,22 @@ clicoder new aoj PROBLEM_NUMBER                 # Prepare directory to deal with
 clicoder new atcoder CONTEST_ID PROBLEM_NUMBER  # Prepare directory to deal with new problem from AtCoder
 ```
 
+### AOJ
+
+PROBLEM_NUMBER is shown in problem URL like this:
+
+<pre>http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=<strong>0001</strong></pre>
+
+### AtCoder
+
+CONTEST_ID is shown in contest URL like this:
+
+<pre>http://<strong>arc001</strong>.contest.atcoder.jp/</pre>
+
+PROBLEM_NUMBER is a number starting from 1, or it can be found in problem URL like this:
+
+<pre>http://arc001.contest.atcoder.jp/tasks/arc001_<strong>1</strong></pre>
+
 # Tips
 
 I recommend you to use this shell function for AOJ:
