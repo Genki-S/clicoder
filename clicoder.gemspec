@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["cfhoyuk.reccos.nelg@gmail.com"]
   spec.description   = %q{Make it easy to deal with online programming contests from the command line}
   spec.summary       = %q{CLI interface to online programming contests}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/Genki-S/clicoder"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
