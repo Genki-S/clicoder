@@ -13,6 +13,12 @@ However, there are chores which are not fun, like
 
 This tool automate these chores so that we can enjoy only really fun part of programming contests (which is, thinking and implementing).
 
+# Demo Video
+
+Here is a demo solving a problem from AOJ (links to youtube):
+
+[![CLI Coder demo](http://img.youtube.com/vi/sVH5EIOxDf8/0.jpg)](http://www.youtube.com/watch?v=sVH5EIOxDf8)
+
 # Installation
 
     $ gem install clicoder
