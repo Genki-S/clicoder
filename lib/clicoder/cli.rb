@@ -1,28 +1,57 @@
 require 'thor'
 require 'thor/group'
+require 'launchy'
 
-require 'clicoder/aoj'
 require 'clicoder/judge'
+require 'clicoder/site_base'
+require 'clicoder/sites/sample_site'
+require 'clicoder/sites/aoj'
+require 'clicoder/sites/atcoder'
 
 module Clicoder
   class Starter < Thor
+    desc "sample_site", "Prepare directory to deal with new problem from SampleSite"
+    def sample_site
+      sample_site = SampleSite.new
+      start_with(sample_site)
+    end
+
     desc "aoj PROBLEM_NUMBER", "Prepare directory to deal with new problem from AOJ"
     def aoj(problem_number)
       aoj = AOJ.new(problem_number)
-      aoj.start
-      puts "created directory #{aoj.work_dir}"
+      start_with(aoj)
+    end
+
+    desc "atcoder CONTEST_ID PROBLEM_NUMBER", "Prepare directory to deal with new problem from AtCoder"
+    def atcoder(contest_id, problem_number)
+      atcoder = AtCoder.new(contest_id, problem_number)
+      start_with(atcoder)
+    end
+
+    no_commands do
+      def start_with(site)
+        site.start
+        puts "created directory #{site.working_directory}"
+        system("cd #{site.working_directory} && git init")
+      end
     end
   end
 
   class CLI < Thor
+    desc "all", "build, execute, and judge"
+    def all
+      invoke :build
+      invoke :execute
+      invoke :judge
+    end
+
     desc "build", "Build your program using `make build`"
     def build
       load_local_config
-      status = system('make build')
-      exit status
+      system('make build')
     end
 
-    desc "execute", "Execute your program using `make run`"
+    desc "execute", "Execute your program using `make execute`"
     def execute
       load_local_config
       Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
@@ -40,28 +69,69 @@ module Clicoder
       load_local_config
       accepted = true
       judge = Judge.new(options)
-      Dir.glob("#{MY_OUTPUTS_DIRNAME}/*.txt").each do |my_output|
-        puts "judging #{my_output}"
-        accepted = false unless judge.judge(my_output, "#{OUTPUTS_DIRNAME}/#{File.basename(my_output)}")
+      Dir.glob("#{OUTPUTS_DIRNAME}/*.txt").each do |output|
+        puts "judging #{output}"
+        my_output =  "#{MY_OUTPUTS_DIRNAME}/#{File.basename(output)}"
+        if File.exists?(my_output)
+          unless judge.judge(output, my_output)
+            puts '! Wrong Answer'
+            system("diff -y #{output} #{my_output}")
+            accepted = false
+          end
+        else
+          puts "! #{my_output} does not exist"
+          accepted = false
+        end
       end
       if accepted
         puts "Correct Answer"
       else
         puts "Wrong Answer"
       end
-      exit accepted ? 0 : 1
     end
 
     desc "submit", "Submit your program"
     def submit
       load_local_config
-      aoj = AOJ.new(1)
-      if aoj.submit
+      site = get_site
+      if site.submit
         puts "Submission Succeeded."
+        site.open_submission
       else
         puts "Submission Failed."
         exit 1
       end
+    end
+
+    desc "add_test", "Add new test case"
+    def add_test
+      load_local_config
+      test_count = Dir.glob("#{INPUTS_DIRNAME}/*.txt").count
+      input_file = "#{INPUTS_DIRNAME}/#{test_count}.txt"
+      output_file = "#{OUTPUTS_DIRNAME}/#{test_count}.txt"
+      puts 'Input:'
+      system("cat > #{input_file}")
+      puts 'Output:'
+      system("cat > #{output_file}")
+    end
+
+    desc "download", "Download description, inputs and outputs"
+    def download
+      load_local_config
+      site = get_site
+      # TODO: this is not beautiful
+      Dir.chdir('..') do
+        site.download_description
+        site.download_inputs
+        site.download_outputs
+      end
+    end
+
+    desc "browse", "Open problem page with the browser"
+    def browse
+      load_local_config
+      site = get_site
+      Launchy.open(site.problem_url)
     end
 
     no_commands do
@@ -71,6 +141,10 @@ module Clicoder
           exit 1
         end
         @local_config = YAML::load_file('.config.yml')
+      end
+
+      def get_site
+        SiteBase.new_with_config(@local_config)
       end
     end
     register Starter, 'new', 'new <command>', 'start a new problem'
