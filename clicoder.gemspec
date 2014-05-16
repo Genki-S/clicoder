@@ -18,12 +18,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "nokogiri"
-  spec.add_dependency "thor"
-  spec.add_dependency "abstract_method"
-  spec.add_dependency "launchy"
-  spec.add_dependency "reverse_markdown"
-  spec.add_dependency "mechanize"
+  spec.add_dependency "nokogiri", "~> 1.6.2.1"
+  spec.add_dependency "thor", "~> 0.19.1"
+  spec.add_dependency "abstract_method", "~> 1.2.1"
+  spec.add_dependency "launchy", "~> 2.4.2"
+  spec.add_dependency "reverse_markdown", "~> 0.4.7"
+  spec.add_dependency "mechanize", "~> 2.7.3"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
