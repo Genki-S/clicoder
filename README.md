@@ -2,6 +2,8 @@
 
 Command Line Interface for Online Programming Contests.
 
+[![clicoder API Documentation](https://www.omniref.com/ruby/gems/clicoder.png)](https://www.omniref.com/ruby/gems/clicoder)
+
 # Why
 
 Programming contests are fun.
