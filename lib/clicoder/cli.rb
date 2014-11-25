@@ -22,9 +22,16 @@ module Clicoder
       start_with(aoj)
     end
 
-    desc "atcoder CONTEST_ID PROBLEM_NUMBER", "Prepare directory to deal with new problem from AtCoder"
-    def atcoder(contest_id, problem_number)
-      atcoder = AtCoder.new(contest_id, problem_number)
+    desc "atcoder TASK_URL", "Prepare directory to deal with new problem from AtCoder"
+    def atcoder(task_url)
+      match_regexp = %r{http://([^.]*)\.contest\.atcoder\.jp/tasks/(.*)}
+      if m = task_url.match(match_regexp)
+        contest_id, task_id = task_url.match(match_regexp)[1, 2]
+      else
+        raise ArgumentError, 'Please provide a valid atcoder task url.'
+      end
+
+      atcoder = AtCoder.new(contest_id, task_id)
       start_with(atcoder)
     end
 

@@ -6,11 +6,11 @@ require 'mechanize'
 module Clicoder
   class AtCoder < SiteBase
 
-    def initialize(contest_id, problem_number)
+    def initialize(contest_id, task_id)
       config.local['contest_id'] = contest_id
-      config.local['problem_number'] = problem_number
+      config.local['task_id'] = task_id
       @contest_id = contest_id
-      @problem_id = "#{@contest_id}_#{problem_number}"
+      @task_id = task_id
     end
 
     def submit
@@ -44,7 +44,7 @@ module Clicoder
     end
 
     def problem_url
-      "http://#{@contest_id}.contest.atcoder.jp/tasks/#{@problem_id}"
+      "http://#{@contest_id}.contest.atcoder.jp/tasks/#{@task_id}"
     end
 
     def description_xpath
@@ -60,7 +60,7 @@ module Clicoder
     end
 
     def working_directory
-      @problem_id
+      @task_id
     end
   end
 end
