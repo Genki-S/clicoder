@@ -13,6 +13,7 @@ module Clicoder
     include Helper
 
     # Parameters
+    abstract_method :login
     abstract_method :site_name
     abstract_method :problem_url
     abstract_method :description_xpath
@@ -121,7 +122,9 @@ module Clicoder
     end
 
     def xml_document
-      @xml_document ||= Nokogiri::HTML(open(problem_url))
+      login do |mechanize, contest_page|
+        @xml_document ||= Nokogiri::HTML(mechanize.get(problem_url).content)
+      end
     end
 
     def config
