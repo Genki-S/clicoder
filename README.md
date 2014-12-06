@@ -103,8 +103,8 @@ Commands:
 * [AtCoder](http://atcoder.jp/)
 
 ```sh
-clicoder new aoj PROBLEM_NUMBER                 # Prepare directory to deal with new problem from AOJ
-clicoder new atcoder CONTEST_ID PROBLEM_NUMBER  # Prepare directory to deal with new problem from AtCoder
+clicoder new aoj PROBLEM_NUMBER # Prepare directory to deal with new problem from AOJ
+clicoder new atcoder TASK_URL   # Prepare directory to deal with new problem from AtCoder
 ```
 
 ### AOJ
@@ -115,13 +115,9 @@ PROBLEM_NUMBER is shown in problem URL like this:
 
 ### AtCoder
 
-CONTEST_ID is shown in contest URL like this:
+TASK_URL is a URL which looks like this:
 
-<pre>http://<strong>arc001</strong>.contest.atcoder.jp/</pre>
-
-PROBLEM_NUMBER is a number starting from 1, or it can be found in problem URL like this:
-
-<pre>http://arc001.contest.atcoder.jp/tasks/arc001_<strong>1</strong></pre>
+<pre>http://arc001.contest.atcoder.jp/tasks/arc001_1</pre>
 
 # Tips
 
