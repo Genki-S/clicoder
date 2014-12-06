@@ -33,7 +33,7 @@ module Clicoder
       when 'aoj'
         AOJ.new(config['problem_number'])
       when 'atcoder'
-        AtCoder.new(config['contest_id'], config['problem_number'])
+        AtCoder.new(config['contest_id'], config['task_id'])
       end
     end
 
