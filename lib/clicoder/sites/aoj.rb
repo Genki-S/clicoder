@@ -29,7 +29,9 @@ module Clicoder
 
     def login
       # no need to login for now
-      yield
+      Mechanize.start do |m|
+        yield m
+      end
     end
 
     def site_name
