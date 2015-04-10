@@ -3,6 +3,7 @@ require 'clicoder/config'
 
 require 'net/http'
 require 'launchy'
+require 'mechanize'
 
 module Clicoder
   class SampleSite < SiteBase
@@ -22,7 +23,9 @@ module Clicoder
     end
 
     def login
-      yield
+      Mechanize.start do |m|
+        yield m
+      end
     end
 
     def site_name
@@ -30,7 +33,7 @@ module Clicoder
     end
 
     def problem_url
-      "#{GEM_ROOT}/fixtures/sample_problem.html"
+      "http://samplesite.com/sample_problem.html"
     end
 
     def description_xpath

@@ -10,6 +10,12 @@ module Clicoder
     let(:sample_site) { SampleSite.new }
     let(:config) { sample_site.config }
 
+    before do
+      stub_request(:get, "http://samplesite.com/sample_problem.html").
+        to_return(status: 200,
+                  body: File.read("#{FIXTURE_DIR}/sample_problem.html"))
+    end
+
     describe '#start' do
       before do
         sample_site.start
@@ -109,8 +115,8 @@ module Clicoder
     end
 
     describe '#login' do
-      it 'yields control with no args' do
-        expect { |b| sample_site.login(&b) }.to yield_with_no_args
+      it 'yields control with mechanize args' do
+        expect { |b| sample_site.login(&b) }.to yield_control
       end
     end
   end
