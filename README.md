@@ -142,6 +142,16 @@ Thank you for your contributions.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Testing
+
+This repository uses `RSpec` to test application logic and `Cucumber` to test acceptance as a CLI tool.
+Make sure both tests passes before submitting pull requests.
+
+```
+$ bundle exec rspec spec/
+$ bundle exec cucumber features/
+```
+
 ## Add a Site
 
 It's easy to add new sites.
