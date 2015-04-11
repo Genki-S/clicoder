@@ -24,11 +24,11 @@ module Clicoder
       end
 
       it 'returns true when the contents of two files are the same' do
-        expect(judge.diff_judge(@input.path, @correct_output.path)).to be_true
+        expect(judge.diff_judge(@input.path, @correct_output.path)).to be true
       end
 
       it 'returns false when the contents of two files are different' do
-        expect(judge.diff_judge(@input.path, @wrong_output.path)).to be_false
+        expect(judge.diff_judge(@input.path, @wrong_output.path)).to be false
       end
     end
 
@@ -52,12 +52,12 @@ module Clicoder
 
       context 'when diff is less than allowed absolute error' do
         let(:abs_error) { 10**(-1) }
-        it { should be_true }
+        it { should be true }
       end
 
       context 'when diff is less than allowed absolute error' do
         let(:abs_error) { 10**(-2) }
-        it { should be_false }
+        it { should be false }
       end
     end
   end

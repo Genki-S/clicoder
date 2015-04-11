@@ -61,13 +61,13 @@ Given /^Launchy.open is stubbed/ do
 end
 
 Then /^an executable should be generated/ do
-  expect(File.exists?('a.out')).to be_true
+  expect(File.exists?('a.out')).to be true
 end
 
 Then /^my answer should be output in my outputs directory/ do
   Dir.glob("#{Clicoder::INPUTS_DIRNAME}/*.txt") do |file|
     basename = File.basename(file)
-    expect(File.exists?("#{Clicoder::MY_OUTPUTS_DIRNAME}/#{basename}")).to be_true
+    expect(File.exists?("#{Clicoder::MY_OUTPUTS_DIRNAME}/#{basename}")).to be true
   end
 end
 

@@ -22,14 +22,14 @@ module Clicoder
       end
 
       it 'creates working directory specified by #working_directory' do
-        expect(File.directory?(sample_site.working_directory)).to be_true
+        expect(File.directory?(sample_site.working_directory)).to be true
       end
 
       it 'prepares directories for inputs, outpus, and myoutputs' do
         dirs = [INPUTS_DIRNAME, OUTPUTS_DIRNAME, MY_OUTPUTS_DIRNAME]
         Dir.chdir(sample_site.working_directory) do
           dirs.each do |dir|
-            expect(File.directory?(dir)).to be_true
+            expect(File.directory?(dir)).to be true
           end
         end
       end

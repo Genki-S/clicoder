@@ -57,7 +57,7 @@ module Clicoder
         end
 
         it 'returns true' do
-          expect(aoj.submit).to be_true
+          expect(aoj.submit).to be true
         end
       end
 
@@ -67,7 +67,7 @@ module Clicoder
         end
 
         it 'returns false' do
-          expect(aoj.submit).to be_false
+          expect(aoj.submit).to be false
         end
       end
     end
