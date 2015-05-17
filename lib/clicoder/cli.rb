@@ -39,7 +39,6 @@ module Clicoder
       def start_with(site)
         site.start
         puts "created directory #{site.working_directory}"
-        system("cd #{site.working_directory} && git init")
       end
     end
   end
