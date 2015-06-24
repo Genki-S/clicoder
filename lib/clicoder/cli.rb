@@ -25,7 +25,7 @@ module Clicoder
     desc "atcoder TASK_URL", "Prepare directory to deal with new problem from AtCoder"
     def atcoder(task_url)
       match_regexp = %r{http://([^.]*)\.contest\.atcoder\.jp/tasks/(.*)}
-      if m = task_url.match(match_regexp)
+      if task_url.match(match_regexp)
         contest_id, task_id = task_url.match(match_regexp)[1, 2]
       else
         raise ArgumentError, "Please provide a valid atcoder task url."
@@ -64,13 +64,18 @@ module Clicoder
         puts "executing #{input}"
         FileUtils.cp(input, TEMP_INPUT_FILENAME)
         system("make execute")
-        FileUtils.cp(TEMP_OUTPUT_FILENAME, "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}")
+        FileUtils.cp(
+          TEMP_OUTPUT_FILENAME,
+          "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}"
+        )
       end
       FileUtils.rm([TEMP_INPUT_FILENAME, TEMP_OUTPUT_FILENAME])
     end
 
     desc "judge", "Judge your outputs"
-    method_option :decimal, type: :numeric, aliases: "-d", desc: "Decimal position of allowed absolute error"
+    method_option :decimal,
+                  type: :numeric, aliases: "-d",
+                  desc: "Decimal position of allowed absolute error"
     def judge
       load_local_config
       accepted = true

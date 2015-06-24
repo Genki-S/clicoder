@@ -95,7 +95,6 @@ module Clicoder
     def copy_makefile
       makefile = config.asset("makefile")
       return unless File.file?(makefile)
-      ext = File.extname(makefile)
       FileUtils.cp(makefile, "#{working_directory}/Makefile")
     end
 

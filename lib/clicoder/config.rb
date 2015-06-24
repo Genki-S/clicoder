@@ -23,10 +23,10 @@ module Clicoder
         file_name = get("default", asset_name)
       end
 
-      unless file_name.empty?
-        return File.expand_path(file_name, global_config_dir)
-      else
+      if file_name.empty?
         return ""
+      else
+        return File.expand_path(file_name, global_config_dir)
       end
     end
 

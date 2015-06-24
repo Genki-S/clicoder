@@ -4,12 +4,30 @@ require "launchy"
 
 Given /^SampleSite submission url is stubbed with webmock/ do
   stub_request(:post, "http://samplesite.com/submit").
-    with(body: { "password" => "sample_password", "user_id" => "sample_user_id" },
-         headers: { "Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "Content-Type" => "application/x-www-form-urlencoded", "Host" => "samplesite.com", "User-Agent" => "Ruby" }).
+    with(
+      body: {
+        "password" => "sample_password",
+        "user_id" => "sample_user_id"
+      },
+      headers: {
+        "Accept" => "*/*",
+        "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+        "Content-Type" => "application/x-www-form-urlencoded",
+        "Host" => "samplesite.com",
+        "User-Agent" => "Ruby"
+      }).
     to_return(status: 200, body: "Success", headers: {})
+
   stub_request(:post, "http://samplesite.com/submit").
-    with(body: { "password" => "", "user_id" => "" },
-         headers: { "Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "Content-Type" => "application/x-www-form-urlencoded", "Host" => "samplesite.com", "User-Agent" => "Ruby" }).
+    with(
+      body: { "password" => "", "user_id" => "" },
+      headers: {
+        "Accept" => "*/*",
+        "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+        "Content-Type" => "application/x-www-form-urlencoded",
+        "Host" => "samplesite.com",
+        "User-Agent" => "Ruby"
+      }).
     to_return(status: 200, body: "Failure", headers: {})
 end
 
@@ -32,7 +50,10 @@ Given /^outputs are wrong/ do
 end
 
 Given /^outputs are correct/ do
-  FileUtils.cp(Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*.txt"), Clicoder::MY_OUTPUTS_DIRNAME)
+  FileUtils.cp(
+    Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*.txt"),
+    Clicoder::MY_OUTPUTS_DIRNAME
+  )
 end
 
 Given /^the answer differs in second decimal place/ do
