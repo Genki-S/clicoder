@@ -2,7 +2,11 @@
 
 Command Line Interface for Online Programming Contests.
 
-[![clicoder API Documentation](https://www.omniref.com/ruby/gems/clicoder.png)](https://www.omniref.com/ruby/gems/clicoder)
+[![Gem Version](https://badge.fury.io/rb/clicoder.svg)](http://badge.fury.io/rb/clicoder)
+[![wercker status](https://app.wercker.com/status/8e81d3f6e22f2dfea557c36f78b20fe4/s/master "wercker status")](https://app.wercker.com/project/bykey/8e81d3f6e22f2dfea557c36f78b20fe4)
+[![Coverage Status](https://coveralls.io/repos/Genki-S/clicoder/badge.svg)](https://coveralls.io/r/Genki-S/clicoder)
+[![Code Climate](https://codeclimate.com/github/Genki-S/clicoder/badges/gpa.svg)](https://codeclimate.com/github/Genki-S/clicoder)
+[![Dependency Status](https://gemnasium.com/Genki-S/clicoder.svg)](https://gemnasium.com/Genki-S/clicoder)
 
 # Why
 
