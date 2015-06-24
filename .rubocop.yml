@@ -1,4 +1,5 @@
 # Hound CI default: https://raw.githubusercontent.com/thoughtbot/hound/master/config/style_guides/ruby.yml
+# Only Metrics/MaxLineLength is changed to allow 120 characters at max
 AllCops:
   Include:
   - "**/*.gemspec"
@@ -506,10 +507,10 @@ Metrics/CyclomaticComplexity:
   Enabled: false
   Max: 6
 Metrics/LineLength:
-  Description: Limit lines to 80 characters.
+  Description: Limit lines to 120 characters.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#80-character-limits
   Enabled: true
-  Max: 80
+  Max: 120
   AllowURI: true
   URISchemes:
   - http
