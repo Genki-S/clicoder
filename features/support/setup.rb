@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'aruba/cucumber'
 require 'aruba/in_process'
 require 'cucumber/rspec/doubles'

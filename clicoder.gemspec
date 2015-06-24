@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "cucumber"
   spec.add_development_dependency "aruba"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "coveralls"
 end

@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'tmpdir'
 
 require 'webmock/rspec'
