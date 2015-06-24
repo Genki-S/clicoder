@@ -1,6 +1,8 @@
 require 'clicoder/site_base'
 require 'clicoder/config'
 
+require 'mechanize'
+
 module Clicoder
   class AOJ < SiteBase
 
