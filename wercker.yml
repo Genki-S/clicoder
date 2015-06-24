@@ -22,9 +22,5 @@ build:
                 echo -p "gem list: $(gem list)"
 
         - script:
-           name: rspec
-           code: bundle exec rspec spec/
-
-        - script:
-           name: cucumber
-           code: bundle exec cucumber features/
+           name: rspec and cucumber with coveralls report
+           code: bundle exec rake test_with_coveralls
