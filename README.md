@@ -7,6 +7,7 @@ Command Line Interface for Online Programming Contests.
 [![Coverage Status](https://coveralls.io/repos/Genki-S/clicoder/badge.svg)](https://coveralls.io/r/Genki-S/clicoder)
 [![Code Climate](https://codeclimate.com/github/Genki-S/clicoder/badges/gpa.svg)](https://codeclimate.com/github/Genki-S/clicoder)
 [![Dependency Status](https://gemnasium.com/Genki-S/clicoder.svg)](https://gemnasium.com/Genki-S/clicoder)
+[![Inline docs](http://inch-ci.org/github/Genki-S/clicoder.svg?branch=master)](http://inch-ci.org/github/Genki-S/clicoder)
 
 # Why
 
