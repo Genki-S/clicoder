@@ -1,9 +1,9 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'clicoder/config'
-require 'clicoder/sites/sample_site'
+require "clicoder/config"
+require "clicoder/sites/sample_site"
 
-require 'reverse_markdown'
+require "reverse_markdown"
 
 module Clicoder
   describe SampleSite do
@@ -16,16 +16,16 @@ module Clicoder
                   body: File.read("#{FIXTURE_DIR}/sample_problem.html"))
     end
 
-    describe '#start' do
+    describe "#start" do
       before do
         sample_site.start
       end
 
-      it 'creates working directory specified by #working_directory' do
+      it "creates working directory specified by #working_directory" do
         expect(File.directory?(sample_site.working_directory)).to be true
       end
 
-      it 'prepares directories for inputs, outpus, and myoutputs' do
+      it "prepares directories for inputs, outpus, and myoutputs" do
         dirs = [INPUTS_DIRNAME, OUTPUTS_DIRNAME, MY_OUTPUTS_DIRNAME]
         Dir.chdir(sample_site.working_directory) do
           dirs.each do |dir|
@@ -34,14 +34,14 @@ module Clicoder
         end
       end
 
-      it 'stores description as markdown' do
+      it "stores description as markdown" do
         description = sample_site.fetch_description
         Dir.chdir(sample_site.working_directory) do
-          expect(File.read('description.md')).to eql(ReverseMarkdown.parse(description))
+          expect(File.read("description.md")).to eql(ReverseMarkdown.parse(description))
         end
       end
 
-      it 'stores sample input files named by number.txt with a newline at the end' do
+      it "stores sample input files named by number.txt with a newline at the end" do
         input_strings = sample_site.fetch_inputs
         inputs_dir = "#{sample_site.working_directory}/inputs"
         Dir.chdir(inputs_dir) do
@@ -51,7 +51,7 @@ module Clicoder
         end
       end
 
-      it 'stores output for sample input files named by number.txt with a newline at the end' do
+      it "stores output for sample input files named by number.txt with a newline at the end" do
         output_strings = sample_site.fetch_outputs
         outputs_dir = "#{sample_site.working_directory}/outputs"
         Dir.chdir(outputs_dir) do
@@ -61,61 +61,61 @@ module Clicoder
         end
       end
 
-      it 'copies template file specified by config into problem directory named main.ext' do
-        template = File.expand_path(config.asset('template'), config.global_config_dir)
+      it "copies template file specified by config into problem directory named main.ext" do
+        template = File.expand_path(config.asset("template"), config.global_config_dir)
         ext = File.extname(template)
         Dir.chdir(sample_site.working_directory) do
           expect(File.read("main#{ext}")).to eql(File.read(template))
         end
       end
 
-      it 'copies Makefile specified by config into problem directory' do
-        makefile = File.expand_path(config.asset('makefile'), config.global_config_dir)
+      it "copies Makefile specified by config into problem directory" do
+        makefile = File.expand_path(config.asset("makefile"), config.global_config_dir)
         Dir.chdir(sample_site.working_directory) do
-          expect(File.read('Makefile')).to eql(File.read(makefile))
+          expect(File.read("Makefile")).to eql(File.read(makefile))
         end
       end
 
-      it 'stores site name to local configuration' do
-        expect(config.local['site']).to eql(sample_site.site_name)
+      it "stores site name to local configuration" do
+        expect(config.local["site"]).to eql(sample_site.site_name)
       end
 
-      it 'stores local configuration as a yaml file' do
+      it "stores local configuration as a yaml file" do
         Dir.chdir(sample_site.working_directory) do
-          expect(YAML::load_file('.config.yml')).to eql(config.local)
+          expect(YAML::load_file(".config.yml")).to eql(config.local)
         end
       end
 
-      context 'when config is not present' do
+      context "when config is not present" do
         before do
           Config.any_instance.stub(:global).and_return({})
           Config.any_instance.stub(:local).and_return({})
         end
 
-        it 'does not raise error' do
-          expect{ sample_site.start }.to_not raise_error
+        it "does not raise error" do
+          expect { sample_site.start }.to_not raise_error
         end
       end
     end
 
-    describe '#fetch_inputs' do
-      it 'downloads sample inputs from problem page' do
+    describe "#fetch_inputs" do
+      it "downloads sample inputs from problem page" do
         input_nodes = Nokogiri::HTML(open(sample_site.problem_url)).xpath(sample_site.inputs_xpath)
         inputs = input_nodes.map(&:text)
         expect(sample_site.fetch_inputs).to eql(inputs)
       end
     end
 
-    describe '#fetch_outputs' do
-      it 'downloads outputs for sample inputs from problem page' do
+    describe "#fetch_outputs" do
+      it "downloads outputs for sample inputs from problem page" do
         output_nodes = Nokogiri::HTML(open(sample_site.problem_url)).xpath(sample_site.outputs_xpath)
-        outputs = output_nodes.map{ |node| node.text.strip }
+        outputs = output_nodes.map { |node| node.text.strip }
         expect(sample_site.fetch_outputs).to eql(outputs)
       end
     end
 
-    describe '#login' do
-      it 'yields control with mechanize args' do
+    describe "#login" do
+      it "yields control with mechanize args" do
         expect { |b| sample_site.login(&b) }.to yield_control
       end
     end

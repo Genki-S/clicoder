@@ -1,12 +1,12 @@
-require 'open-uri'
-require 'nokogiri'
-require 'yaml'
-require 'net/http'
-require 'abstract_method'
-require 'reverse_markdown'
+require "open-uri"
+require "nokogiri"
+require "yaml"
+require "net/http"
+require "abstract_method"
+require "reverse_markdown"
 
-require 'clicoder'
-require 'clicoder/config'
+require "clicoder"
+require "clicoder/config"
 
 module Clicoder
   class SiteBase
@@ -26,13 +26,13 @@ module Clicoder
     abstract_method :open_submission
 
     def self.new_with_config(config)
-      case config['site']
-      when 'sample_site'
+      case config["site"]
+      when "sample_site"
         SampleSite.new
-      when 'aoj'
-        AOJ.new(config['problem_number'])
-      when 'atcoder'
-        AtCoder.new(config['contest_id'], config['task_id'])
+      when "aoj"
+        AOJ.new(config["problem_number"])
+      when "atcoder"
+        AtCoder.new(config["contest_id"], config["task_id"])
       end
     end
 
@@ -59,7 +59,7 @@ module Clicoder
 
     def download_description
       Dir.chdir(working_directory) do
-        File.open('description.md', 'w') do |f|
+        File.open("description.md", "w") do |f|
           f.write(ReverseMarkdown.parse(fetch_description))
         end
       end
@@ -68,7 +68,7 @@ module Clicoder
     def download_inputs
       Dir.chdir("#{working_directory}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
-          File.open("#{i}.txt", 'w') do |f|
+          File.open("#{i}.txt", "w") do |f|
             f.write(input.strip + "\n")
           end
         end
@@ -78,7 +78,7 @@ module Clicoder
     def download_outputs
       Dir.chdir("#{working_directory}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
-          File.open("#{i}.txt", 'w') do |f|
+          File.open("#{i}.txt", "w") do |f|
             f.write(output.strip + "\n")
           end
         end
@@ -86,14 +86,14 @@ module Clicoder
     end
 
     def copy_template
-      template_file = config.asset('template')
+      template_file = config.asset("template")
       return unless File.file?(template_file)
       ext = File.extname(template_file)
       FileUtils.cp(template_file, "#{working_directory}/main#{ext}")
     end
 
     def copy_makefile
-      makefile = config.asset('makefile')
+      makefile = config.asset("makefile")
       return unless File.file?(makefile)
       ext = File.extname(makefile)
       FileUtils.cp(makefile, "#{working_directory}/Makefile")
@@ -114,14 +114,14 @@ module Clicoder
     end
 
     def store_local_config
-      config.local['site'] = site_name
-      File.open("#{working_directory}/.config.yml", 'w') do |f|
+      config.local["site"] = site_name
+      File.open("#{working_directory}/.config.yml", "w") do |f|
         f.write(config.local.to_yaml)
       end
     end
 
     def xml_document
-      login do |mechanize, contest_page|
+      login do |mechanize, _contest_page|
         @xml_document ||= Nokogiri::HTML(mechanize.get(problem_url).content)
       end
     end

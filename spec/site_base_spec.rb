@@ -1,10 +1,10 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'clicoder/site_base'
-require 'clicoder/config'
+require "clicoder/site_base"
+require "clicoder/config"
 
-require 'nokogiri'
-require 'abstract_method'
+require "nokogiri"
+require "abstract_method"
 
 module Clicoder
   describe SiteBase do
@@ -26,14 +26,14 @@ module Clicoder
       )
     end
 
-    it 'raises AbstractMethodCalled for abstract methods' do
+    it "raises AbstractMethodCalled for abstract methods" do
       abstract_methods.each do |method|
-        expect{ site_base.send(method) }.to raise_exception(AbstractMethodCalled)
+        expect { site_base.send(method) }.to raise_exception(AbstractMethodCalled)
       end
     end
 
-    describe '#config' do
-      it 'returns config object' do
+    describe "#config" do
+      it "returns config object" do
         expect(site_base.config).to be_a Config
       end
     end

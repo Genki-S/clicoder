@@ -1,4 +1,4 @@
-require 'clicoder'
+require "clicoder"
 
 module Clicoder
   class Config
@@ -7,7 +7,7 @@ module Clicoder
     def initialize
       global_config_file = "#{global_config_dir}/config.yml"
       @global = File.exists?(global_config_file) ? YAML::load_file(global_config_file) : {}
-      local_config_file = '.config.yml'
+      local_config_file = ".config.yml"
       @local = File.exists?(local_config_file) ? YAML::load_file(local_config_file) : {}
     end
 
@@ -17,16 +17,16 @@ module Clicoder
     end
 
     def asset(asset_name)
-      site_name = get('site')
+      site_name = get("site")
       file_name = get(site_name, asset_name)
       if file_name.empty?
-        file_name = get('default', asset_name)
+        file_name = get("default", asset_name)
       end
 
       unless file_name.empty?
         return File.expand_path(file_name, global_config_dir)
       else
-        return ''
+        return ""
       end
     end
 
@@ -40,11 +40,10 @@ module Clicoder
         keys.each do |key|
           conf = conf[key]
         end
-        return conf.nil? ? '' : conf
+        return conf.nil? ? "" : conf
       rescue
-        return ''
+        return ""
       end
     end
-
   end
 end

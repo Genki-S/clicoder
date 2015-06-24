@@ -1,32 +1,31 @@
-require 'clicoder/site_base'
-require 'clicoder/config'
+require "clicoder/site_base"
+require "clicoder/config"
 
-require 'mechanize'
+require "mechanize"
 
 module Clicoder
   class AOJ < SiteBase
-
     def initialize(problem_number)
-      config.local['problem_number'] = problem_number
+      config.local["problem_number"] = problem_number
       @problem_id = "%04d" % problem_number
     end
 
     def submit
-      submit_url = 'http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit'
+      submit_url = "http://judge.u-aizu.ac.jp/onlinejudge/servlet/Submit"
       post_params = {
-        userID: config.get('aoj', 'user_id'),
-        password: config.get('aoj', 'password'),
+        userID: config.get("aoj", "user_id"),
+        password: config.get("aoj", "password"),
         problemNO: @problem_id,
         language: ext_to_language_name(File.extname(detect_main)),
         sourceCode: File.read(detect_main),
-        submit: 'Send'
+        submit: "Send"
       }
       response = Net::HTTP.post_form(URI(submit_url), post_params)
-      return response.body !~ /UserID or Password is Wrong/
+      response.body !~ /UserID or Password is Wrong/
     end
 
     def open_submission
-      Launchy.open('http://judge.u-aizu.ac.jp/onlinejudge/status.jsp')
+      Launchy.open("http://judge.u-aizu.ac.jp/onlinejudge/status.jsp")
     end
 
     def login
@@ -37,7 +36,7 @@ module Clicoder
     end
 
     def site_name
-      'aoj'
+      "aoj"
     end
 
     def problem_url

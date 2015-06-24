@@ -7,4 +7,4 @@ RSpec::Core::RakeTask.new(:spec)
 Cucumber::Rake::Task.new(:features)
 Coveralls::RakeTask.new
 
-task :test_with_coveralls => [:spec, :features, 'coveralls:push']
+task test_with_coveralls: [:spec, :features, "coveralls:push"]

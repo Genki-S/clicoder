@@ -1,12 +1,12 @@
-require 'thor'
-require 'thor/group'
-require 'launchy'
+require "thor"
+require "thor/group"
+require "launchy"
 
-require 'clicoder/judge'
-require 'clicoder/site_base'
-require 'clicoder/sites/sample_site'
-require 'clicoder/sites/aoj'
-require 'clicoder/sites/atcoder'
+require "clicoder/judge"
+require "clicoder/site_base"
+require "clicoder/sites/sample_site"
+require "clicoder/sites/aoj"
+require "clicoder/sites/atcoder"
 
 module Clicoder
   class Starter < Thor
@@ -28,7 +28,7 @@ module Clicoder
       if m = task_url.match(match_regexp)
         contest_id, task_id = task_url.match(match_regexp)[1, 2]
       else
-        raise ArgumentError, 'Please provide a valid atcoder task url.'
+        raise ArgumentError, "Please provide a valid atcoder task url."
       end
 
       atcoder = AtCoder.new(contest_id, task_id)
@@ -54,7 +54,7 @@ module Clicoder
     desc "build", "Build your program using `make build`"
     def build
       load_local_config
-      system('make build')
+      system("make build")
     end
 
     desc "execute", "Execute your program using `make execute`"
@@ -70,17 +70,17 @@ module Clicoder
     end
 
     desc "judge", "Judge your outputs"
-    method_option :decimal, type: :numeric, aliases: '-d', desc: 'Decimal position of allowed absolute error'
+    method_option :decimal, type: :numeric, aliases: "-d", desc: "Decimal position of allowed absolute error"
     def judge
       load_local_config
       accepted = true
       judge = Judge.new(options)
       Dir.glob("#{OUTPUTS_DIRNAME}/*.txt").each do |output|
         puts "judging #{output}"
-        my_output =  "#{MY_OUTPUTS_DIRNAME}/#{File.basename(output)}"
+        my_output = "#{MY_OUTPUTS_DIRNAME}/#{File.basename(output)}"
         if File.exists?(my_output)
           unless judge.judge(output, my_output)
-            puts '! Wrong Answer'
+            puts "! Wrong Answer"
             system("diff -y #{output} #{my_output}")
             accepted = false
           end
@@ -115,9 +115,9 @@ module Clicoder
       test_count = Dir.glob("#{INPUTS_DIRNAME}/*.txt").count
       input_file = "#{INPUTS_DIRNAME}/#{test_count}.txt"
       output_file = "#{OUTPUTS_DIRNAME}/#{test_count}.txt"
-      puts 'Input:'
+      puts "Input:"
       system("cat > #{input_file}")
-      puts 'Output:'
+      puts "Output:"
       system("cat > #{output_file}")
     end
 
@@ -126,7 +126,7 @@ module Clicoder
       load_local_config
       site = get_site
       # TODO: this is not beautiful
-      Dir.chdir('..') do
+      Dir.chdir("..") do
         site.download_description
         site.download_inputs
         site.download_outputs
@@ -142,26 +142,30 @@ module Clicoder
 
     no_commands do
       def load_local_config
-        unless File.exists?('.config.yml')
-          puts 'It seems you are not in probelm directory'
+        unless File.exists?(".config.yml")
+          puts "It seems you are not in probelm directory"
           exit 1
         end
-        @local_config = YAML::load_file('.config.yml')
+        @local_config = YAML::load_file(".config.yml")
       end
 
       def get_site
         SiteBase.new_with_config(@local_config)
       end
     end
-    register Starter, 'new', 'new <command>', 'start a new problem'
+    register Starter, "new", "new <command>", "start a new problem"
   end
 
   # Use aruba in-process
   # https://github.com/cucumber/aruba
   # https://github.com/erikhuda/thor/wiki/Integrating-with-Aruba-In-Process-Runs
   class ArubaCLI
-    def initialize(argv, stdin=STDIN, stdout=STDOUT, stderr=STDERR, kernel=Kernel)
-      @argv, @stdin, @stdout, @stderr, @kernel = argv, stdin, stdout, stderr, kernel
+    def initialize(argv, stdin = STDIN, stdout = STDOUT, stderr = STDERR, kernel = Kernel)
+      @argv = argv
+      @stdin = stdin
+      @stdout = stdout
+      @stderr = stderr
+      @kernel = kernel
     end
 
     def execute!

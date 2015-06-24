@@ -1,25 +1,24 @@
-require 'clicoder/site_base'
-require 'clicoder/config'
+require "clicoder/site_base"
+require "clicoder/config"
 
-require 'net/http'
-require 'launchy'
-require 'mechanize'
+require "net/http"
+require "launchy"
+require "mechanize"
 
 module Clicoder
   class SampleSite < SiteBase
-
     def submit
-      submit_url = 'http://samplesite.com/submit'
+      submit_url = "http://samplesite.com/submit"
       post_params = {
-        user_id: config.get('sample_site', 'user_id'),
-        password: config.get('sample_site', 'password'),
+        user_id: config.get("sample_site", "user_id"),
+        password: config.get("sample_site", "password"),
       }
       response = Net::HTTP.post_form(URI(submit_url), post_params)
-      return response.body =~ /Success/
+      response.body =~ /Success/
     end
 
     def open_submission
-      Launchy.open('http://samplesite.com/submissions')
+      Launchy.open("http://samplesite.com/submissions")
     end
 
     def login
@@ -29,7 +28,7 @@ module Clicoder
     end
 
     def site_name
-      'sample_site'
+      "sample_site"
     end
 
     def problem_url
@@ -49,7 +48,7 @@ module Clicoder
     end
 
     def working_directory
-      'working_directory'
+      "working_directory"
     end
   end
 end

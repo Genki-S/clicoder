@@ -1,16 +1,16 @@
-require 'clicoder'
-require 'clicoder/sites/sample_site'
-require 'launchy'
+require "clicoder"
+require "clicoder/sites/sample_site"
+require "launchy"
 
 Given /^SampleSite submission url is stubbed with webmock/ do
   stub_request(:post, "http://samplesite.com/submit").
-    with(:body => {"password"=>"sample_password", "user_id"=>"sample_user_id"},
-         :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'samplesite.com', 'User-Agent'=>'Ruby'}).
-    to_return(:status => 200, :body => "Success", :headers => {})
+    with(body: { "password" => "sample_password", "user_id" => "sample_user_id" },
+         headers: { "Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "Content-Type" => "application/x-www-form-urlencoded", "Host" => "samplesite.com", "User-Agent" => "Ruby" }).
+    to_return(status: 200, body: "Success", headers: {})
   stub_request(:post, "http://samplesite.com/submit").
-    with(:body => {"password"=>"", "user_id"=>""},
-         :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'Host'=>'samplesite.com', 'User-Agent'=>'Ruby'}).
-    to_return(:status => 200, :body => "Failure", :headers => {})
+    with(body: { "password" => "", "user_id" => "" },
+         headers: { "Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "Content-Type" => "application/x-www-form-urlencoded", "Host" => "samplesite.com", "User-Agent" => "Ruby" }).
+    to_return(status: 200, body: "Failure", headers: {})
 end
 
 Given /^I don't have user_id and password/ do
@@ -38,13 +38,13 @@ end
 Given /^the answer differs in second decimal place/ do
   FileUtils.rm(Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*"))
   FileUtils.rm(Dir.glob("#{Clicoder::MY_OUTPUTS_DIRNAME}/*"))
-  File.open("#{Clicoder::OUTPUTS_DIRNAME}/0.txt", 'w') do |f|
+  File.open("#{Clicoder::OUTPUTS_DIRNAME}/0.txt", "w") do |f|
     f.write(<<-EOS)
     0.11 0.11
     0.13 0.13
     EOS
   end
-  File.open("#{Clicoder::MY_OUTPUTS_DIRNAME}/0.txt", 'w') do |f|
+  File.open("#{Clicoder::MY_OUTPUTS_DIRNAME}/0.txt", "w") do |f|
     f.write(<<-EOS)
     0.12 0.12
     0.12 0.12
@@ -61,7 +61,7 @@ Given /^Launchy.open is stubbed/ do
 end
 
 Then /^an executable should be generated/ do
-  expect(File.exists?('a.out')).to be true
+  expect(File.exists?("a.out")).to be true
 end
 
 Then /^my answer should be output in my outputs directory/ do
