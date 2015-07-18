@@ -1,0 +1,7 @@
+---
+languages:
+  cpp:
+    build: g++ -g %s -o a.out
+    run: ./a.out
+  rb:
+    run: ruby %s

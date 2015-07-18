@@ -43,16 +43,16 @@ Example:
 
 ```yaml
 ---
-default:
-    template: template.cpp # template file. relative to this file
-    makefile: Makefile # Makefile used by CLI Coder. relative to this file
-aoj:
-    template: aoj_template.cpp # template only used for site 'aoj'
-    user_id: Glen_S
-    password: PASSWORD
-atcoder:
-    user_id: Glen_S
-    password: PASSWORD
+sites:
+  default:
+      template: template.cpp # template file. relative to this file
+  aoj:
+      template: aoj_template.cpp # template only used for site 'aoj'
+      user_id: Glen_S
+      password: PASSWORD
+  atcoder:
+      user_id: Glen_S
+      password: PASSWORD
 ```
 
 ## template.cpp etc. (recommended)
@@ -62,30 +62,6 @@ It will be copied into working directories as `main.*` each time you start solvi
 
 If you don't use templates, make sure you write your solutions in files named `main.*`.
 
-## Makefile (required)
-
-It is recommended to put your `Makefile` under `~/.clicoder.d`.
-
-CLI Coder uses Makefile to build and execute your program.
-
-## "build" rule
-
-It should build your program.
-
-Example:
-
-    build:
-        g++ -g main.cpp -o a.out
-
-## "execute" rule
-
-It has to run your program with redirection from "in.txt" and redirection to "out.txt".
-
-Example:
-
-    execute:
-        ./a.out < in.txt > out.txt
-
 # Usage
 
 ```sh
@@ -93,9 +69,9 @@ Commands:
   clicoder add_test        # Add new test case
   clicoder all             # build, execute, and judge
   clicoder browse          # Open problem page with the browser
-  clicoder build           # Build your program using `make build`
+  clicoder build           # Build your program
   clicoder download        # Download description, inputs and outputs
-  clicoder execute         # Execute your program using `make execute`
+  clicoder execute         # Execute your program
   clicoder help [COMMAND]  # Describe available commands or one specific command
   clicoder judge           # Judge your outputs
   clicoder new <command>   # start a new problem

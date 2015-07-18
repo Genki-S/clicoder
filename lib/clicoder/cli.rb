@@ -2,6 +2,8 @@ require "thor"
 require "thor/group"
 require "launchy"
 
+require "clicoder/builder"
+require "clicoder/runner"
 require "clicoder/judge"
 require "clicoder/site_base"
 require "clicoder/sites/sample_site"
@@ -44,6 +46,8 @@ module Clicoder
   end
 
   class CLI < Thor
+    include Helper
+
     desc "all", "build, execute, and judge"
     def all
       invoke :build
@@ -51,25 +55,20 @@ module Clicoder
       invoke :judge
     end
 
-    desc "build", "Build your program using `make build`"
+    desc "build", "Build your program"
     def build
       load_local_config
-      system("make build")
+      builder = Builder.new
+      builder.build(detect_main)
     end
 
-    desc "execute", "Execute your program using `make execute`"
+    desc "execute", "Execute your program"
     def execute
       load_local_config
+      runner = Runner.new
       Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
-        puts "executing #{input}"
-        FileUtils.cp(input, TEMP_INPUT_FILENAME)
-        system("make execute")
-        FileUtils.cp(
-          TEMP_OUTPUT_FILENAME,
-          "#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}"
-        )
+        File.write("#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}", runner.run(detect_main, input))
       end
-      FileUtils.rm([TEMP_INPUT_FILENAME, TEMP_OUTPUT_FILENAME])
     end
 
     desc "judge", "Judge your outputs"

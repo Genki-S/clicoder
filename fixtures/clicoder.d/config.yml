@@ -1,9 +1,8 @@
 ---
-default:
+sites:
+  default:
     template: template.cpp
-    makefile: Makefile
-sample_site:
+  sample_site:
     user_id: sample_user_id
     password: sample_password
     template: sample_template.cpp
-    makefile: sample_Makefile
