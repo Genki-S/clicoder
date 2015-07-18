@@ -10,8 +10,9 @@ module Clicoder
     def submit
       submit_url = "http://samplesite.com/submit"
       post_params = {
-        user_id: config.get("sample_site", "user_id"),
-        password: config.get("sample_site", "password"),
+        # FIXME: using nil in place of empty string produces wired parameter
+        user_id: config.get("sites", "sample_site", "user_id") || "",
+        password: config.get("sites", "sample_site", "password") || "",
       }
       response = Net::HTTP.post_form(URI(submit_url), post_params)
       response.body =~ /Success/
