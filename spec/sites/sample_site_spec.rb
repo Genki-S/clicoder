@@ -69,13 +69,6 @@ module Clicoder
         end
       end
 
-      it "copies Makefile specified by config into problem directory" do
-        makefile = File.expand_path(config.asset("makefile"), config.global_config_dir)
-        Dir.chdir(sample_site.working_directory) do
-          expect(File.read("Makefile")).to eql(File.read(makefile))
-        end
-      end
-
       it "stores site name to local configuration" do
         expect(config.local["site"]).to eql(sample_site.site_name)
       end

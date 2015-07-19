@@ -2,13 +2,18 @@ require "clicoder"
 
 module Clicoder
   class Config
-    attr_accessor :global, :local
+    attr_accessor :default, :global, :local
 
     def initialize
       global_config_file = "#{global_config_dir}/config.yml"
+      @default = File.exists?(default_config_file) ? YAML::load_file(default_config_file) : {}
       @global = File.exists?(global_config_file) ? YAML::load_file(global_config_file) : {}
       local_config_file = ".config.yml"
       @local = File.exists?(local_config_file) ? YAML::load_file(local_config_file) : {}
+    end
+
+    def default_config_file
+      File.join(__dir__, '../../config/default.yml')
     end
 
     # NOTE: This is not a class variable in order to evaluate stubbed ENV['HOME'] on each RSpec run
@@ -18,12 +23,12 @@ module Clicoder
 
     def asset(asset_name)
       site_name = get("site")
-      file_name = get(site_name, asset_name)
-      if file_name.empty?
-        file_name = get("default", asset_name)
+      file_name = get("sites", site_name, asset_name)
+      if file_name.nil?
+        file_name = get("sites", "default", asset_name)
       end
 
-      if file_name.empty?
+      if file_name.nil?
         return ""
       else
         return File.expand_path(file_name, global_config_dir)
@@ -31,7 +36,7 @@ module Clicoder
     end
 
     def merged_config
-      @merged_config ||= global.merge(local)
+      @merged_config ||= default.merge(global.merge(local))
     end
 
     def get(*keys)
@@ -40,9 +45,9 @@ module Clicoder
         keys.each do |key|
           conf = conf[key]
         end
-        return conf.nil? ? "" : conf
+        return conf.nil? ? nil : conf
       rescue
-        return ""
+        return nil
       end
     end
   end

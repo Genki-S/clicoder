@@ -44,7 +44,6 @@ module Clicoder
         download_outputs
       end
       copy_template
-      copy_makefile
       store_local_config
     end
 
@@ -90,12 +89,6 @@ module Clicoder
       return unless File.file?(template_file)
       ext = File.extname(template_file)
       FileUtils.cp(template_file, "#{working_directory}/main#{ext}")
-    end
-
-    def copy_makefile
-      makefile = config.asset("makefile")
-      return unless File.file?(makefile)
-      FileUtils.cp(makefile, "#{working_directory}/Makefile")
     end
 
     def fetch_description
