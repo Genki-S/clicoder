@@ -15,9 +15,6 @@ module Clicoder
     # Parameters
     abstract_method :site_name
     abstract_method :problem_url
-    abstract_method :description_xpath
-    abstract_method :inputs_xpath
-    abstract_method :outputs_xpath
     abstract_method :working_directory
 
     # Operations
@@ -103,6 +100,18 @@ module Clicoder
     def fetch_outputs
       outputs_nodes = xml_document.xpath(outputs_xpath)
       outputs_nodes.map(&:text)
+    end
+
+    def description_xpath
+      config.get("xpaths", site_name, "description")
+    end
+
+    def inputs_xpath
+      config.get("xpaths", site_name, "inputs").join('|')
+    end
+
+    def outputs_xpath
+      config.get("xpaths", site_name, "outputs").join('|')
     end
 
     def store_local_config
