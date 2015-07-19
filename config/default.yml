@@ -5,3 +5,22 @@ languages:
     run: ./a.out
   rb:
     run: ruby %s
+xpaths:
+  sample_site:
+    description: //div[@id="description"]
+    inputs:
+      - //div[@id="inputs"]/pre
+    outputs:
+      - //div[@id="outputs"]/pre
+  aoj:
+    description: //div[@class="description"]
+    inputs:
+      - //*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][1][text()="Sample Input"]]
+    outputs:
+      - //*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][text()="Output for the Sample Input"]]
+  atcoder:
+    description: //div[@id="task-statement"]
+    inputs:
+      - //pre[preceding-sibling::h3[1][contains(text(), "入力例")]]
+    outputs:
+      - //pre[preceding-sibling::h3[1][contains(text(), "出力例")]]

@@ -36,18 +36,6 @@ module Clicoder
       "http://samplesite.com/sample_problem.html"
     end
 
-    def description_xpath
-      '//div[@id="description"]'
-    end
-
-    def inputs_xpath
-      '//div[@id="inputs"]/pre'
-    end
-
-    def outputs_xpath
-      '//div[@id="outputs"]/pre'
-    end
-
     def working_directory
       "working_directory"
     end

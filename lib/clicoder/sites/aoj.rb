@@ -43,18 +43,6 @@ module Clicoder
       "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=#{@problem_id}"
     end
 
-    def description_xpath
-      '//div[@class="description"]'
-    end
-
-    def inputs_xpath
-      '//*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][1][text()="Sample Input"]]'
-    end
-
-    def outputs_xpath
-      '//*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][text()="Output for the Sample Input"]]'
-    end
-
     def working_directory
       @problem_id
     end

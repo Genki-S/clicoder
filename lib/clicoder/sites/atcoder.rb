@@ -46,18 +46,6 @@ module Clicoder
       "http://#{@contest_id}.contest.atcoder.jp/tasks/#{@task_id}"
     end
 
-    def description_xpath
-      '//div[@id="task-statement"]'
-    end
-
-    def inputs_xpath
-      '//pre[preceding-sibling::h3[1][contains(text(), "入力例")]]'
-    end
-
-    def outputs_xpath
-      '//pre[preceding-sibling::h3[1][contains(text(), "出力例")]]'
-    end
-
     def working_directory
       @task_id
     end
