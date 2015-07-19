@@ -30,8 +30,8 @@ module Clicoder
       Mechanize.start do |m|
         login_page = m.get("http://#{@contest_id}.contest.atcoder.jp/login")
         contest_home_page = login_page.form_with(action: "/login") do |f|
-          f.field_with(name: "name").value = config.get("atcoder", "user_id")
-          f.field_with(name: "password").value = config.get("atcoder", "password")
+          f.field_with(name: "name").value = config.get("sites", "atcoder", "user_id")
+          f.field_with(name: "password").value = config.get("sites", "atcoder", "password")
         end.click_button
 
         yield m, contest_home_page
