@@ -66,7 +66,7 @@ module Clicoder
     def execute
       load_local_config
       runner = Runner.new
-      Dir.glob("#{INPUTS_DIRNAME}/*.txt").each do |input|
+      Dir.glob("#{INPUTS_DIRNAME}/*").each do |input|
         File.write("#{MY_OUTPUTS_DIRNAME}/#{File.basename(input)}", runner.run(detect_main, input))
       end
     end
@@ -79,7 +79,7 @@ module Clicoder
       load_local_config
       accepted = true
       judge = Judge.new(options)
-      Dir.glob("#{OUTPUTS_DIRNAME}/*.txt").each do |output|
+      Dir.glob("#{OUTPUTS_DIRNAME}/*").each do |output|
         puts "judging #{output}"
         my_output = "#{MY_OUTPUTS_DIRNAME}/#{File.basename(output)}"
         if File.exists?(my_output)
@@ -116,9 +116,12 @@ module Clicoder
     desc "add_test", "Add new test case"
     def add_test
       load_local_config
-      test_count = Dir.glob("#{INPUTS_DIRNAME}/*.txt").count
-      input_file = "#{INPUTS_DIRNAME}/#{test_count}.txt"
-      output_file = "#{OUTPUTS_DIRNAME}/#{test_count}.txt"
+      test_number = 0
+      while File.exist?("#{INPUTS_DIRNAME}/#{test_number}")
+        test_number += 1
+      end
+      input_file = "#{INPUTS_DIRNAME}/#{test_number}"
+      output_file = "#{OUTPUTS_DIRNAME}/#{test_number}"
       puts "Input:"
       system("cat > #{input_file}")
       puts "Output:"

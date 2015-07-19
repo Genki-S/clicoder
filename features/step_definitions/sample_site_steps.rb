@@ -42,7 +42,7 @@ Given /^in a problem directory/ do
 end
 
 Given /^there is no output/ do
-  FileUtils.rm(Dir.glob("#{Clicoder::MY_OUTPUTS_DIRNAME}/*.txt"))
+  FileUtils.rm(Dir.glob("#{Clicoder::MY_OUTPUTS_DIRNAME}/*"))
 end
 
 Given /^outputs are wrong/ do
@@ -51,7 +51,7 @@ end
 
 Given /^outputs are correct/ do
   FileUtils.cp(
-    Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*.txt"),
+    Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*"),
     Clicoder::MY_OUTPUTS_DIRNAME
   )
 end
@@ -59,13 +59,13 @@ end
 Given /^the answer differs in second decimal place/ do
   FileUtils.rm(Dir.glob("#{Clicoder::OUTPUTS_DIRNAME}/*"))
   FileUtils.rm(Dir.glob("#{Clicoder::MY_OUTPUTS_DIRNAME}/*"))
-  File.open("#{Clicoder::OUTPUTS_DIRNAME}/0.txt", "w") do |f|
+  File.open("#{Clicoder::OUTPUTS_DIRNAME}/0", "w") do |f|
     f.write(<<-EOS)
     0.11 0.11
     0.13 0.13
     EOS
   end
-  File.open("#{Clicoder::MY_OUTPUTS_DIRNAME}/0.txt", "w") do |f|
+  File.open("#{Clicoder::MY_OUTPUTS_DIRNAME}/0", "w") do |f|
     f.write(<<-EOS)
     0.12 0.12
     0.12 0.12
@@ -86,7 +86,7 @@ Then /^an executable should be generated/ do
 end
 
 Then /^my answer should be output in my outputs directory/ do
-  Dir.glob("#{Clicoder::INPUTS_DIRNAME}/*.txt") do |file|
+  Dir.glob("#{Clicoder::INPUTS_DIRNAME}/*") do |file|
     basename = File.basename(file)
     expect(File.exists?("#{Clicoder::MY_OUTPUTS_DIRNAME}/#{basename}")).to be true
   end

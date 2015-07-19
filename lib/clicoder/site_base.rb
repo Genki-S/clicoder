@@ -67,7 +67,7 @@ module Clicoder
     def download_inputs
       Dir.chdir("#{working_directory}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
-          File.open("#{i}.txt", "w") do |f|
+          File.open("#{i}", "w") do |f|
             f.write(input.strip + "\n")
           end
         end
@@ -77,7 +77,7 @@ module Clicoder
     def download_outputs
       Dir.chdir("#{working_directory}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
-          File.open("#{i}.txt", "w") do |f|
+          File.open("#{i}", "w") do |f|
             f.write(output.strip + "\n")
           end
         end
