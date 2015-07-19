@@ -21,6 +21,6 @@ xpaths:
   atcoder:
     description: //div[@id="task-statement"]
     inputs:
-      - //pre[preceding-sibling::h3[1][contains(text(), "入力例")]]
+      - //*[preceding-sibling::h3[1][contains(text(), "入力例")]]
     outputs:
-      - //pre[preceding-sibling::h3[1][contains(text(), "出力例")]]
+      - //*[preceding-sibling::h3[1][contains(text(), "出力例")]]
