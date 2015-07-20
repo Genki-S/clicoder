@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html hola_ext_inject="disabled" lang="ja"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Sign in - AtCoder Regular Contest 001 | AtCoder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="
+">
+    <meta name="keyword" content="AtCoder,アットコーダー,あっとこーだー,プログラミングコンテスト
+">
+    <meta name="author" content="Atcoder">
+    <meta name="copyright" content="Copyright (C) 2012 Atcoder">
+    <meta name="format-detection" content="telephone=no">
+
+
+    <link href="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/all.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/ga.js" async="" type="text/javascript"></script><script src="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/jquery.js"></script>
+    <link rel="shortcut icon" href="https://arc001.contest.atcoder.jp/img/favicon.ico">
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-30554866-3']);
+  _gaq.push(['_setDomainName', 'atcoder.jp']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>    
+    <!--[if lt IE 9]><style>.navbar-fixed-top{ position: relative!important; }</style><![endif]-->
+  <script>try {  for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){    var lastpass_f = document.forms[lastpass_iter];    if(typeof(lastpass_f.lpsubmitorig)=="undefined"){      if (typeof(lastpass_f.submit) == "function") {        lastpass_f.lpsubmitorig = lastpass_f.submit;        lastpass_f.submit = function(){          var form = this;          try {            if (document.documentElement && 'createEvent' in document)            {              var forms = document.getElementsByTagName('form');              for (var i=0 ; i<forms.length ; ++i)                if (forms[i]==form)                {                  var element = document.createElement('lpformsubmitdataelement');                  element.setAttribute('formnum',i);                  element.setAttribute('from','submithook');                  document.documentElement.appendChild(element);                  var evt = document.createEvent('Events');                  evt.initEvent('lpformsubmit',true,false);                  element.dispatchEvent(evt);                  break;                }            }          } catch (e) {}          try {            form.lpsubmitorig();          } catch (e) {}        }      }    }  }} catch (e) {}</script></head>
+
+  <body>
+          <div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+              <a class="brand" href="https://arc001.contest.atcoder.jp/"><span class="contest-name">AtCoder Regular Contest 001</span><span class="bland-small"><time class="timezone-fixed">2012/04/14 21:00:00</time> ~ <time class="timezone-fixed">2012/04/15 02:00:00</time></span></a>
+      
+      <div class="nav-collapse">
+                            <ul id="nav-right-logined" class="nav pull-right" style="display:none;">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle static-nav-language-selector-dropdown" data-toggle="dropdown" style="display:none;" lang="ja">
+                <i class="flag-ja"></i> 日本語 <b class="caret"></b>
+              </a>
+              <a href="#" class="dropdown-toggle static-nav-language-selector-dropdown" data-toggle="dropdown" style="" lang="en">
+                <i class="flag-en"></i> English <b class="caret"></b>
+              </a>
+              <a href="#" class="dropdown-toggle static-nav-language-selector-dropdown" data-toggle="dropdown" style="display:none;" lang="ko">
+                <i class="flag-ko"></i> 한국어 <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li> <a class="static-nav-language-selector" href="#" lang="ja"><i class="flag-ja"></i> 日本語</a></li>
+                <li> <a class="static-nav-language-selector" href="#" lang="en"><i class="flag-en"></i> English</a></li>
+                <li> <a class="static-nav-language-selector" href="#" lang="ko"><i class="flag-ko"></i> 한국어</a></li>
+              </ul>
+            </li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-white"></i> <span id="nav-right-username"></span><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="https://arc001.contest.atcoder.jp/me">マイプロフィール</a></li>
+                                <li><a href="https://arc001.contest.atcoder.jp/logout"><span class="lang lang-selected"><span class="lang-en lang-child">Sign out</span><span class="lang-ja lang-child hidden-lang">ログアウト</span></span></a></li>
+             </ul>
+            </li>
+          </ul>
+          <ul id="nav-right-not-login" class="nav pull-right" style="">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle static-nav-language-selector-dropdown" data-toggle="dropdown" style="display:none;" lang="ja">
+                <i class="flag-ja"></i> 日本語 <b class="caret"></b>
+              </a>
+              <a href="#" class="dropdown-toggle static-nav-language-selector-dropdown" data-toggle="dropdown" style="" lang="en">
+                <i class="flag-en"></i> English <b class="caret"></b>
+              </a>
+              <a href="#" class="dropdown-toggle static-nav-language-selector-dropdown" data-toggle="dropdown" style="display:none;" lang="ko">
+                <i class="flag-ko"></i> 한국어 <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li> <a class="static-nav-language-selector" href="#" lang="ja"><i class="flag-ja"></i> 日本語</a></li>
+                <li> <a class="static-nav-language-selector" href="#" lang="en"><i class="flag-en"></i> English</a></li>
+                <li> <a class="static-nav-language-selector" href="#" lang="ko"><i class="flag-ko"></i> 한국어</a></li>
+              </ul>
+            </li>
+                        <li class="divider-vertical"></li>
+            <li><a href="https://arc001.contest.atcoder.jp/register"><span class="lang lang-selected"><span class="lang-en lang-child">Sign up</span><span class="lang-ja lang-child hidden-lang">新規登録</span></span></a></li>
+                        <li class="divider-vertical"></li>
+            <li><a href="https://arc001.contest.atcoder.jp/login"><span class="lang lang-selected"><span class="lang-en lang-child">Sign in</span><span class="lang-ja lang-child hidden-lang">ログイン</span></span></a></li>
+            
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    <div id="outer-inner" class="container">
+      <div id="alert_box" class="alert alert-block" style="display:none">
+  <a class="close" data-dismiss="alert">×</a>
+  <h4 id="alert_box_heading" class="alert-heading" style="display:none"></h4>
+  <p id="alert_box_content"></p>
+</div>
+
+      
+<div class="row">
+  <div class="span10 offset1 well form-2c">
+    <form class="form-horizontal" method="POST" action="/login">
+      <fieldset>
+        <legend><span class="lang lang-selected"><span class="lang-en lang-child">Sign in</span><span class="lang-ja lang-child hidden-lang">ログイン</span></span></legend>
+        <div class="control-group">
+          <label class="control-label" for="name"><span class="lang lang-selected"><span class="lang-en lang-child">User ID</span><span class="lang-ja lang-child hidden-lang">ユーザID</span></span></label>
+          <div class="controls">
+            <input style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDiEFu6xIcAAAAXhJREFUOMvNk8FLVFEUxn/ffRdmIAla1CbBFDGCpoiQWYlBLty7UHAvEq2HYLhveDMws2/TIly6E9SdIEj+AVYgRaTgXhe2C968x2nhTOjow8pNZ/ede/ide893Lvx3UavVhkMIk30dQqiGECpF9e68CCG8LpfL3yStAAIk6Z2kT3Ect68C+AGdSroFVEII82aWSXoGYGYHVwE0qOM43pU0BXw3s1zSI2AnSZKXhYB6vT7inLvd7XZ/eu8fOOe2JEW9zjkwZ2bHkoayLDtpt9ufLzzBe/8GWC6VSpc7nIE2pLPLeu/fA0uDQ3T/6pp6039uZnfN7Ieke1EUrQOu3/VawPloNBrbwIyZ7TvnLvg/+mKOJ3xk88NR4R4sADM92fp9MDRMdXaRxenHVMbuFy8SMAFkZval2Wyu9ZN3Hk4zWx0nAtKsWwxotVrNNE2f5nn+CrB+/nRvlSR5y2EK0TWbSKfT+fo3Lribfr4bA/yfl56y2kkuZX8BjXVyqMs8oFcAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;" id="name" class="input-xlarge" name="name" autocomplete="off" type="text">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="name"><span class="lang lang-selected"><span class="lang-en lang-child">Password</span><span class="lang-ja lang-child hidden-lang">パスワード</span></span></label>
+          <div class="controls">
+            <input style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDiEFu6xIcAAAAXhJREFUOMvNk8FLVFEUxn/ffRdmIAla1CbBFDGCpoiQWYlBLty7UHAvEq2HYLhveDMws2/TIly6E9SdIEj+AVYgRaTgXhe2C968x2nhTOjow8pNZ/ede/ide893Lvx3UavVhkMIk30dQqiGECpF9e68CCG8LpfL3yStAAIk6Z2kT3Ect68C+AGdSroFVEII82aWSXoGYGYHVwE0qOM43pU0BXw3s1zSI2AnSZKXhYB6vT7inLvd7XZ/eu8fOOe2JEW9zjkwZ2bHkoayLDtpt9ufLzzBe/8GWC6VSpc7nIE2pLPLeu/fA0uDQ3T/6pp6039uZnfN7Ieke1EUrQOu3/VawPloNBrbwIyZ7TvnLvg/+mKOJ3xk88NR4R4sADM92fp9MDRMdXaRxenHVMbuFy8SMAFkZval2Wyu9ZN3Hk4zWx0nAtKsWwxotVrNNE2f5nn+CrB+/nRvlSR5y2EK0TWbSKfT+fo3Lribfr4bA/yfl56y2kkuZX8BjXVyqMs8oFcAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;" id="name" class="input-xlarge" name="password" value="" type="password">
+          </div>
+        </div>
+
+        <p><a href="https://arc001.contest.atcoder.jp/password/recovery"><span class="lang lang-selected"><span class="lang-en lang-child">Forgot your password?</span><span class="lang-ja lang-child hidden-lang">パスワードを忘れた方はこちら</span></span></a></p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-large"><span class="lang lang-selected"><span class="lang-en lang-child">Sign in</span><span class="lang-ja lang-child hidden-lang">ログイン</span></span></button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  </div>
+    </div>
+
+    <footer>
+      <ul>
+  <li><a href="https://arc001.contest.atcoder.jp/tutorial"><span class="lang lang-selected"><span class="lang-en lang-child">Tutorial</span><span class="lang-ja lang-child hidden-lang">チュートリアル</span></span></a></li>
+  <li><a href="https://arc001.contest.atcoder.jp/rules"><span class="lang lang-selected"><span class="lang-en lang-child">Rules</span><span class="lang-ja lang-child hidden-lang">ルール</span></span></a></li>
+  <li><a href="https://arc001.contest.atcoder.jp/glossary"><span class="lang lang-selected"><span class="lang-en lang-child">Glossary</span><span class="lang-ja lang-child hidden-lang">用語集</span></span></a></li>
+  <li><a href="https://arc001.contest.atcoder.jp/faq"><span class="lang lang-selected"><span class="lang-en lang-child">FAQ</span><span class="lang-ja lang-child hidden-lang">よくある質問</span></span></a></li>
+</ul>
+<p id="copyright">Powered by <a href="http://atcoder.jp/">AtCoder.</a></p>
+    </footer>
+
+        <script src="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/bootstrap.js"></script>
+    <script src="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/prettify.js"></script>
+    <script src="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/varmath.js"></script>
+    <script src="Sign%20in%20-%20AtCoder%20Regular%20Contest%20001%20%7C%20AtCoder_files/script.js"></script>
+  
+
+</body></html>
