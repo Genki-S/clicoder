@@ -15,9 +15,9 @@ xpaths:
   aoj:
     description: //div[@class="description"]
     inputs:
-      - //*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][1][text()="Sample Input"]]
+      - //*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][1][contains(text(), "Sample Input") and not(contains(text(), "Output for the Sample Input"))]]
     outputs:
-      - //*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][text()="Output for the Sample Input"]]
+      - //*[self::pre or self::div/pre][preceding-sibling::*[self::h2 or self::h3][1][contains(text(), "Output for the Sample Input")]]
   atcoder:
     description: //div[@id="task-statement"]
     inputs:
