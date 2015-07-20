@@ -65,7 +65,7 @@ module Clicoder
       Dir.chdir("#{working_directory}/#{INPUTS_DIRNAME}") do
         fetch_inputs.each_with_index do |input, i|
           File.open("#{i}", "w") do |f|
-            f.write(input.strip + "\n")
+            f.write(sanitize(input) + "\n")
           end
         end
       end
@@ -75,7 +75,7 @@ module Clicoder
       Dir.chdir("#{working_directory}/#{OUTPUTS_DIRNAME}") do
         fetch_outputs.each_with_index do |output, i|
           File.open("#{i}", "w") do |f|
-            f.write(output.strip + "\n")
+            f.write(sanitize(output) + "\n")
           end
         end
       end
@@ -129,6 +129,12 @@ module Clicoder
 
     def config
       @config ||= Config.new
+    end
+
+    private
+
+    def sanitize(text)
+      text.strip.tr("\r", "")
     end
   end
 end
