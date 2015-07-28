@@ -12,16 +12,21 @@ module Clicoder
   class SiteBase
     include Helper
 
+    # Initialize a site instance and set local configurations (like problem id).
     abstract_method :initialize
-
-    # Parameters
+    # Returns site name.
     abstract_method :site_name
+    # Returns problem url which can be opened by browsers.
     abstract_method :problem_url
+    # Returns a directory name it should create with `clicoder new` command.
     abstract_method :working_directory
-
-    # Operations
+    # Log in the user and execute given block under logged-in condition.
+    # Since sometimes you need to login to see problems or to submit your solutions.
     abstract_method :login
+    # Submit your code using Mechanize.
     abstract_method :submit
+    # Open submission status page.
+    # This will be called automatically after successful submissions.
     abstract_method :open_submission
 
     def self.new_with_config(config)

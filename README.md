@@ -102,9 +102,6 @@ TASK_URL is a URL which looks like this:
 
 # Contributing
 
-**Please send your pull requests to "develop" branch.**
-Thank you for your contributions.
-
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
@@ -132,48 +129,21 @@ It's easy to add new sites.
 Site classes resides in `lib/clicoder/sites` directory.
 See existing sites for examples.
 
-Basically, you need to implement these methods:
+You need to implement abstract methods specified in `Clicoder::SiteBase`.
 
-### initialize
+And you need to specify xpaths for description, sample inputs, and sample outputs for a problem of the site you created. You can specify multiple xpaths for sample inputs and sample outputs (those are joined with `|` operator of xpath). Write it in `config/default.yml`, under `xpaths:` section like this:
 
-Initialize a site instance (i.e. a problem) and set local configurations (like problem id).
-
-### submit
-
-Submit your code.
-
-### open_submission
-
-Open submission status page. This will be called automatically after successful submissions.
-
-### login
-
-Sometimes you need to login to see problems or to submit your solutions.
-This method has to log in and execute given block under logged-in condition.
-
-### site_name
-
-Returns site name.
-
-### problem_url
-
-Returns problem url.
-
-### description_xpath
-
-Returns xpath which indicates where the problem description is.
-Used to download problem description.
-
-### inputs_xpath
-
-Returns xpath which indicates where the sample inputs are.
-Used to download sample inputs.
-
-### outputs_xpath
-
-Returns xpath which indicates where the sample outputs are.
-Used to download sample outputs.
-
-### working_directory
-
-Returns a directory name it should create with `clicoder new` command.
+```
+languages:
+  ...
+xpaths:
+  ...
+  YOUR_SITE:
+    description: YOUR_DESCRIPTION_XPATH
+    inputs:
+      - YOUR_SAMPLE_INPUTS_XPATH
+      - YOUR_SAMPLE_INPUTS_XPATH_2
+    outputs:
+      - YOUR_SAMPLE_OUTPUTS_XPATH
+      - YOUR_SAMPLE_OUTPUTS_XPATH_2
+```
