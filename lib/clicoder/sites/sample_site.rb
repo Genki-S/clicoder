@@ -7,6 +7,10 @@ require "mechanize"
 
 module Clicoder
   class SampleSite < SiteBase
+    def initialize
+      # TODO: save local config and test it
+    end
+
     def submit
       submit_url = "http://samplesite.com/submit"
       post_params = {

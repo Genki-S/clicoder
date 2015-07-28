@@ -12,6 +12,8 @@ module Clicoder
   class SiteBase
     include Helper
 
+    abstract_method :initialize
+
     # Parameters
     abstract_method :site_name
     abstract_method :problem_url

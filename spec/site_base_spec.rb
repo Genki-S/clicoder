@@ -13,10 +13,10 @@ module Clicoder
 
     let(:abstract_methods) do
       %i(
+        initialize
         site_name
         problem_url
         working_directory
-
         login
         submit
         open_submission
@@ -26,12 +26,6 @@ module Clicoder
     it "raises AbstractMethodCalled for abstract methods" do
       abstract_methods.each do |method|
         expect { site_base.send(method) }.to raise_exception(AbstractMethodCalled)
-      end
-    end
-
-    describe "#config" do
-      it "returns config object" do
-        expect(site_base.config).to be_a Config
       end
     end
   end
