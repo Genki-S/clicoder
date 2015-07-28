@@ -100,18 +100,6 @@ TASK_URL is a URL which looks like this:
 
 <pre>http://arc001.contest.atcoder.jp/tasks/arc001_1</pre>
 
-# Tips
-
-I recommend you to use this shell function for AOJ:
-
-```sh
-function aoj() {
-    clicoder new aoj $1
-    dir=$(printf "%04d" $1)
-    cd $dir
-}
-```
-
 # Contributing
 
 **Please send your pull requests to "develop" branch.**
