@@ -22,5 +22,7 @@ xpaths:
     description: //div[@id="task-statement"]
     inputs:
       - //section[preceding-sibling::h3[1][contains(text(), "入力例")]]/pre
+      - //pre[preceding-sibling::h3[1][contains(text(), "入力例")]]
     outputs:
       - //section[preceding-sibling::h3[1][contains(text(), "出力例")]]/pre
+      - //pre[preceding-sibling::h3[1][contains(text(), "出力例")]]
